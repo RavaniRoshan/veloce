@@ -1,0 +1,30 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/veloce",
+    "crates/veloce-core",
+    "crates/veloce-layout",
+    "crates/veloce-render",
+    "crates/veloce-router",
+    "crates/veloce-runtime",
+]
+
+[workspace.dependencies]
+anyhow = "1"
+async-trait = "0.1"
+crossterm = "0.28"
+crossbeam-channel = "0.5"
+ratatui = "0.29"
+taffy = "0.8"
+thiserror = "2"
+tokio = { version = "1", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+
+# Dev-deps (justification: snapshot testing, property fuzz, cross-platform PTY e2e,
+# CLI process assertions, and micro-benchmarks; none ship in the runtime API).
+insta = { version = "1", features = ["filters"] }
+proptest = "1"
+assert_cmd = "2"
+expectrl = "0.7"
+criterion = "0.5"
