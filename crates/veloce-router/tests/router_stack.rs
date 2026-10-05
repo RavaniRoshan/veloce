@@ -8,10 +8,7 @@ struct PageA {
 }
 
 #[derive(Clone)]
-enum A {
-    A1,
-    Key,
-}
+enum A {}
 
 #[async_trait::async_trait]
 impl View for PageA {
@@ -43,9 +40,7 @@ impl View for PageA {
 struct PageB;
 
 #[derive(Clone)]
-enum B {
-    B1,
-}
+enum B {}
 
 #[async_trait::async_trait]
 impl View for PageB {
@@ -66,9 +61,7 @@ impl View for PageB {
 struct ModalV;
 
 #[derive(Clone)]
-enum M {
-    M1,
-}
+enum M {}
 
 #[async_trait::async_trait]
 impl View for ModalV {

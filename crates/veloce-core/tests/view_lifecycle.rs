@@ -3,7 +3,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::Result;
-use veloce_core::{AnyView, Context, Element, Flex, Text, View, ViewAdapter};
+use veloce_core::{AnyView, Context, Element, Text, View, ViewAdapter};
 
 #[derive(Default)]
 struct TestView {

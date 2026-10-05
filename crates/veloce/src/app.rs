@@ -59,14 +59,11 @@ impl VeloceApp {
         loop {
             // input events first (highest priority)
             while let Ok(ev) = event_rx.try_recv() {
-                match ev {
-                    AppEvent::Key(k) => {
-                        if k.code == crossterm::event::KeyCode::Char('q') {
-                            return Ok(());
-                        }
-                        self.router.handle_key(k);
+                if let AppEvent::Key(k) = ev {
+                    if k.code == crossterm::event::KeyCode::Char('q') {
+                        return Ok(());
                     }
-                    _ => {}
+                    self.router.handle_key(k);
                 }
             }
             self.router.drain_command_queue();
