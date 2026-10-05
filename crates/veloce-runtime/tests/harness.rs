@@ -48,10 +48,8 @@ fn walk(dir: &std::path::Path) -> Vec<std::path::PathBuf> {
     let mut out = vec![];
     for e in std::fs::read_dir(dir).unwrap() {
         let p = e.unwrap().path();
-        if p.is_dir() {
-            if p.file_name().unwrap() == "src" {
-                out.extend(walk_files(&p));
-            }
+        if p.is_dir() && p.file_name().unwrap() == "src" {
+            out.extend(walk_files(&p));
         }
     }
     out

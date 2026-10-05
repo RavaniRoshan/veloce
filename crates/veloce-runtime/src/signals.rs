@@ -32,7 +32,7 @@ pub fn install_signal_handlers(handle: &tokio::runtime::Handle) {
 
 fn exit_with(code: i32) -> ! {
     TerminalGuard::restore_now();
-    let _ = tracing::dispatcher::get_default(|d| {
+    tracing::dispatcher::get_default(|d| {
         // Best-effort flush of buffered subscribers before exit.
         let _ = d;
     });
