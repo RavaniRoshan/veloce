@@ -5,7 +5,7 @@
 - TerminalGuard/panic hook/signals/RAII; PTY-verified panic+SIGINT+SIGTERM+normal restore.
 - Tier-1 ingestion thread + bounded crossbeam; 60Hz ticker; log-to-file.
 - A5 lint gate; A4 non-TTY no-escapes; A6 6.39ms; A7 4MiB.
-- cargo fmt clean; clippy: not yet run to zero-warnings gate (TODO at M2 end).
+- cargo fmt clean; clippy: zero warnings at M2 end.
 - M1 next: Element AST, taffy mirror, quantize_rect + drift/fuzz/snapshot tests.
 
 ## 2026-10-05 M1
@@ -21,3 +21,5 @@
 - drain_prioritized(budget): inputs > actions > ticks; C3/C4/C5 probes pass.
 - C4 key latency p95 12us under 1000 actions/s; C5 10k interleaved, zero deadlock.
 - C1 PTY e2e ingest verified; C6 shared-mut lint gate added.
+
+Milestones 0-2 complete. All P0 rows in A, B, C are WORKS or OWNER-VERIFY; zero BROKEN/MISSING/PARTIAL.
