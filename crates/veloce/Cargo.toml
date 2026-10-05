@@ -47,3 +47,7 @@ workspace = true
 [[bench]]
 name = "frame"
 harness = false
+
+
+[dev-dependencies.assert_cmd]
+workspace = true

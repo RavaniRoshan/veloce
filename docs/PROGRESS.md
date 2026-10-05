@@ -44,3 +44,10 @@ Milestones 0-2 complete. All P0 rows in A, B, C are WORKS or OWNER-VERIFY; zero 
 - flex_column!/flex_row! macros == builder (G1).
 - criterion benches: cold_boot 3.55ms, frame cost linear ~0.7us/child (G2 partial).
 - agent_dashboard showcase + PTY test (G3).
+
+## 2026-10-05 M6 completion + release prep
+- A2 hardened: panic inside view() and inside update() of a live VeloceApp proven on PTY (panic_in_view_pty.rs, 2 tests).
+- README.md added; site/ (vite marketing + docs pages from docs/*.md) builds (npx vite build OK).
+- Final gates: cargo fmt --check clean; cargo clippy --all-targets -- -D warnings clean; cargo test --workspace 48 tests green; no #[ignore] anywhere in crates/.
+- Measured this run: cold boot 6.29 ms (harness) / 3.55 ms (criterion), idle RSS 4 MiB, key latency p95 10 us.
+- G4/G5 remain OWNER-VERIFY (no macOS/Windows toolchain; no crates.io token).

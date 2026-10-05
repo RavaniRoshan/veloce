@@ -43,7 +43,6 @@ impl View for Dashboard {
                     }
                 }
             },
-            
         }
     }
 

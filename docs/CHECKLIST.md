@@ -5,12 +5,12 @@ BROKEN/MISSING/PARTIAL (not allowed to remain for P0/P1 at release), UNVERIFIED.
 
 ## A Terminal harness and safety (M0)
 - A1 P0 [T] WORKS: `normal_exit_restores_terminal` (crates/veloce-runtime/tests/pty_safety.rs) — alt-screen enter+leave sequences observed on a real PTY.
-- A2 P0 [T] WORKS: `panic_in_app_restores_terminal` — panic inside the app leaves `?1049l` + backtrace on a real PTY.
+- A2 P0 [T] WORKS: strict — `panic_inside_view_restores_terminal` and `panic_inside_update_restores_terminal` (crates/veloce/tests/panic_in_view_pty.rs) panic inside `view()` / `update()` of a live VeloceApp frame loop on a real PTY; both assert `?1049l` (alt screen restored) plus the panic message. Plus `panic_in_app_restores_terminal` for the runtime-level hook.
 - A3 P0 [P] WORKS: `sigint_restores_terminal`, `sigterm_restores_terminal` on a real PTY.
 - A4 P0 [P] WORKS: `non_tty_emits_no_escape_sequences` — TERM=dumb piped output contains no ESC bytes.
 - A5 P0 [L] WORKS: `no_print_macros_in_framework_src` — grep gate over crates/*/src.
-- A6 P0 [M] WORKS: probe `cold_boot_to_first_frame_under_15ms`: measured 6.39 ms.
-- A7 P0 [M] WORKS: probe `idle_memory_under_12mb`: measured VmRSS 4096 KiB.
+- A6 P0 [M] WORKS: probe `cold_boot_to_first_frame_under_15ms`: measured 6.29 ms (test harness path); criterion `cold_boot_first_frame` = 3.55 ms.
+- A7 P0 [M] WORKS: probe `idle_memory_under_12mb`: measured VmRSS 4096 KiB (4 MiB).
 
 ## B Layout engine (M1)
 - B1 P0 [T] WORKS: `conversion_is_total` — nodes vec len == pre-order count.
@@ -25,7 +25,7 @@ BROKEN/MISSING/PARTIAL (not allowed to remain for P0/P1 at release), UNVERIFIED.
 - C1 P0 [T] WORKS: `tier1_emits_typed_events_over_bounded_channel` (PTY e2e) + `ingestion_channel_is_bounded` semantics.
 - C2 P0 [T] WORKS: render is a pure fn of (element, size) — `render(&Element, &mut Buffer)` signature; TestBackend snapshots assert determinism.
 - C3 P0 [T] WORKS: `priority_input_over_actions_over_ticks`.
-- C4 P0 [M] WORKS: probe — 1000 actions/s, key latency p95 12us, max 17us (`KEY_LATENCY_P95_US`).
+- C4 P0 [M] WORKS: probe `key_echo_not_blocked_by_1000_actions_per_sec` — 1000 actions/s, key latency p95 10 us, max 13 us.
 - C5 P0 [T] WORKS: `ten_k_interleaved_events_no_deadlock`.
 - C6 P0 [L] WORKS: `no_shared_mutable_state_in_public_api` lint gate.
 
@@ -50,10 +50,10 @@ BROKEN/MISSING/PARTIAL (not allowed to remain for P0/P1 at release), UNVERIFIED.
 
 ## G DX, macros, performance, release (M6)
 - G1 P1 [T] WORKS: `macros_equal_builder_api` — flex_column!/flex_row! macro == builder output (PartialEq).
-- G2 P0 [M] PARTIAL: cold boot 3.55 ms (<15 ms budget) PASS; idle RSS 4 MiB (<12 MiB) PASS; frame cost is NOT flat: 197µs @10, 259µs @100, ~500µs @500, 1442µs @2000 children — linear with taffy tree size. Recorded honest: ~0.7 µs/child rebuild per frame; well within 16ms at 2000-line viewports.
+- G2 P0 [M] PARTIAL: cold boot 3.55 ms (<15 ms) PASS; idle RSS 4 MiB (<12 MiB) PASS; **per-frame cost is NOT flat as content grows**: 197 µs @10 children, 259 µs @100, ~500 µs @500, 1442 µs @2000. The PRD claim "per-frame cost flat as content grows" is NOT met at this milestone — relayout is O(children) because the Element tree and taffy tree are rebuilt per frame. Render output itself is viewport-bounded; a memoized layout cache is the fix and is listed in PARITY.md.
 - G3 P0 [T] WORKS: `agent_dashboard_streams_mock_tool_executions` PTY test.
-- G4 P0 MISSING: multi-platform (Linux verified; macOS/Windows require owner-verify — see OWNER_VERIFY).
-- G5 P0 PARTIAL: `cargo package` dry-run pending; crates.io publish needs owner token (OWNER-VERIFY).
+- G4 P0 OWNER-VERIFY: Linux x86_64 verified locally (build + PTY e2e). macOS/Windows have no cross toolchain here; not verified — OWNER-VERIFY steps in final answer.
+- G5 P0 OWNER-VERIFY: `cargo package -p <crate> --list` verified file manifests; full `cargo package --workspace` cannot resolve unpublished inter-crate versions, and `cargo publish` needs the owner token. Docs (README, docs/*.md) and 3 runnable examples exist. OWNER-VERIFY steps in final answer.
 
 ## H Verification matrix
 - H1 P0 WORKS: layout invariants proptest + invariants test (see B1-B7).
