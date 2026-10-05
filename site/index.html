@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Veloce — terminal-UI meta-framework for Rust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+  :root {
+    --paper: #f7f5f0;
+    --ink: #141414;
+    --muted: #6b6b66;
+    --line: #e5e0d5;
+    --accent: #ff5b1f;
+    --darkcard: #17171a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  a:hover .u-or-link, a.u-or-link:hover { color: var(--accent); }
+  .serif-i { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  nav {
+    display: flex; align-items: center; gap: 18px; padding: 20px 0;
+    border-bottom: 1px solid var(--line); font-size: 14px;
+  }
+  nav .brand { font-weight: 600; letter-spacing: 0.2px; margin-right: auto; }
+  nav .brand b { color: var(--accent); }
+  .gh { border: 1px solid var(--line); padding: 6px 10px; border-radius: 999px; }
+  header.hero { padding: 72px 0 46px; border-bottom: 1px solid var(--line); }
+  h1 { font-size: clamp(38px, 6vw, 68px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 18px; font-weight: 600; }
+  .sub { color: var(--muted); font-size: 18px; max-width: 640px; line-height: 1.5; margin: 0 0 28px; }
+  .cta { display: inline-flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 11px 18px; border-radius: 12px;
+    border: 1px solid var(--ink); font-size: 14px; font-weight: 500;
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .stack { margin-top: 34px; }
+  .stack .lbl { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 13px; background: #fff9; }
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  h2 { font-size: 30px; margin: 0 0 18px; letter-spacing: -0.01em; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 26px; }
+  .card { border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: #fff7; }
+  .card h3 { margin: 0 0 8px; font-size: 17px; }
+  .card p { color: var(--muted); margin: 0; font-size: 14px; line-height: 1.55; }
+  .code {
+    background: var(--darkcard); color: #e8e8e8; border-radius: 16px; padding: 20px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; line-height: 1.55;
+    overflow-x: auto; margin-top: 22px;
+  }
+  .code .k { color: #ff8a4c; } .code .s { color: #8bd67a; } .code .c { color: #6a6a72; }
+  ol.steps { list-style: none; padding: 0; counter-reset: step; margin: 24px 0 0; }
+  ol.steps li { counter-increment: step; border-top: 1px solid var(--line); padding: 16px 0; display: flex; gap: 18px; align-items: baseline; }
+  ol.steps li::before { content: "0" counter(step); color: var(--accent); font-family: ui-monospace, monospace; }
+  footer { padding: 26px 0 60px; color: var(--muted); font-size: 13px; }
+  /* docs page */
+  .layout { display: grid; grid-template-columns: 240px 1fr; gap: 36px; padding: 34px 0; }
+  .side a { display: block; padding: 5px 0; color: var(--muted); font-size: 14px; }
+  .side a:hover { color: var(--accent); }
+  article { max-width: 720px; line-height: 1.65; font-size: 15px; }
+  article h1 { font-size: 30px; } article h2 { font-size: 22px; margin-top: 30px; }
+  article pre { background: var(--darkcard); color: #eee; padding: 16px; border-radius: 12px; overflow-x: auto; }
+  article code { background: #eee6d8; padding: 1px 5px; border-radius: 6px; font-size: 13px; }
+  article pre code { background: transparent; padding: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="/">Veloce<b>.</b></a>
+    <a href="/docs.html">Docs</a>
+    <a href="/docs.html?page=CHECKLIST">Checklist</a>
+    <a href="/#features">Features</a>
+    <a href="https://github.com/RavaniRoshan/veloce" class="gh">GitHub</a>
+  </nav>
+
+  <header class="hero">
+    <h1>Terminal apps that ship <span class="serif-i">like the web.</span></h1>
+    <p class="sub">An opinionated application-layer meta-framework for Rust. Router, view lifecycles, flexbox layout, and a frame-budgeted flush — no event-loop plumbing, no borrow-checker fights.</p>
+    <div class="cta">
+      <a class="btn primary" href="/docs.html">Read the docs</a>
+      <a class="btn" href="https://github.com/RavaniRoshan/veloce">Star on GitHub</a>
+    </div>
+    <div class="stack">
+      <div class="lbl">Built on</div>
+      <div class="chips">
+        <span class="chip">tokio</span><span class="chip">taffy flexbox</span><span class="chip">ratatui</span><span class="chip">crossterm</span><span class="chip">crossbeam-channel</span><span class="chip">async-trait</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="features">
+    <h2>Send like Remix. <span class="serif-i">Own the terminal.</span></h2>
+    <div class="grid3">
+      <div class="card"><h3>Router & shells</h3><p>Stack routing with persistent chrome, modal overlays with backdrops, and focus lock — the same mental model you bring from Next.js/Remix.</p></div>
+      <div class="card"><h3>True flexbox</h3><p>taffy computes continuous layout; Veloce quantizes into discrete terminal cells with error diffusion, parent clamps, and no zero-width collapses.</p></div>
+      <div class="card"><h3>Managed async hydration</h3><p>Views declare <code>load()</code>; the framework runs it on Tokio, shows your fallback, and cancels dangling tasks on navigation.</p></div>
+      <div class="card"><h3>Crash-resilient runtime</h3><p>Every panic, SIGINT, and SIGTERM restores the terminal. Logs go to a file, never the live screen.</p></div>
+      <div class="card"><h3>One event loop</h3><p>Block-free ingestion thread, tokio pool, and a synchronous main thread with priority drain: input &gt; actions &gt; ticks.</p></div>
+      <div class="card"><h3>60 FPS budget</h3><p>Dirty-state redraws, a frame-budgeted flush, and benchmarked cold boot ~3.5 ms / idle RSS ~4 MiB.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The reference API. <span class="serif-i">That&rsquo;s the whole app.</span></h2>
+    <div class="code">#[async_trait::async_trait]
+impl <span class="k">View</span> for <span class="k">DeploymentDashboard</span> {
+    type Action = Action;
+
+    async fn load(&amp;mut self) -&gt; Result&lt;()&gt; { ... }
+
+    fn update(&amp;mut self, action: Action, cx: &amp;mut Context&lt;Action&gt;) {
+        match action {
+            Action::LogReceived(line) =&gt; self.logs.push(line),
+            ...
+        }
+    }
+
+    fn view(&amp;self) -&gt; Element {
+        Flex::column().gap(1)
+            .child(Text::new("Service: auth-service-v2").bold())
+            .child(ScrollView::new().flex_grow(1.0)
+                .children(self.logs.iter().map(|l| Text::new(l))))
+            .into_element()
+    }
+}
+
+#[tokio::main]
+async fn <span class="k">main</span>() -&gt; Result&lt;()&gt; {
+    VeloceApp::new().route(<span class="s">"/"</span>, DeploymentDashboard::default()).run().await
+}</div>
+  </section>
+
+  <section>
+    <h2>Three steps, <span class="serif-i">install to first frame.</span></h2>
+    <ol class="steps">
+      <li>Add veloce = "0.1" to Cargo.toml.</li>
+      <li>Implement View for one struct with flexbox children.</li>
+      <li>Run it: VeloceApp::new().route("/", view).run().await</li>
+    </ol>
+  </section>
+
+  <footer>
+    Veloce · open source terminal-UI meta-framework · © 2026
+  </footer>
+</div>
+
+<script type="module" src="/main.js"></script>
+</body>
+</html>

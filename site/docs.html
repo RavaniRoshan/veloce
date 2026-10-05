@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docs — Veloce</title>
+<style>
+  :root { --paper:#f7f5f0; --ink:#141414; --muted:#6b6b66; --line:#e5e0d5; --accent:#ff5b1f; --darkcard:#17171a; }
+  * { box-sizing:border-box; } body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,sans-serif; }
+  a { color:inherit; text-decoration:none; } a:hover { color:var(--accent); }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 24px; }
+  nav { display:flex; align-items:center; gap:18px; padding:20px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  nav .brand { font-weight:600; margin-right:auto; } nav .brand b{color:var(--accent);}
+  .layout { display:grid; grid-template-columns:240px 1fr; gap:36px; padding:34px 0; }
+  .side a { display:block; padding:5px 0; color:var(--muted); font-size:14px; }
+  article { max-width:720px; line-height:1.65; font-size:15px; }
+  article h1 { font-size:30px; } article h2 { font-size:22px; margin-top:30px; }
+  article pre { background:var(--darkcard); color:#eee; padding:16px; border-radius:12px; overflow-x:auto; }
+  article code { background:#eee6d8; padding:1px 5px; border-radius:6px; font-size:13px; }
+  article pre code { background:transparent; padding:0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="/">Veloce<b>.</b></a>
+    <a href="/docs.html">Docs</a>
+    <a href="/docs.html?page=CHECKLIST">Checklist</a>
+    <a href="/docs.html?page=DESIGN">Design</a>
+    <a href="https://github.com/RavaniRoshan/veloce" style="border:1px solid var(--line);padding:6px 10px;border-radius:999px;">GitHub</a>
+  </nav>
+  <div class="layout">
+    <aside class="side" id="side"></aside>
+    <article id="doc"></article>
+  </div>
+</div>
+<script type="module" src="/docs.js"></script>
+</body>
+</html>
