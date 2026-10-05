@@ -1,0 +1,7 @@
+---
+source: crates/veloce-render/tests/snapshots.rs
+assertion_line: 17
+expression: "normalize(&render_to_string(&el, 20, 5))"
+---
+
+ a  b

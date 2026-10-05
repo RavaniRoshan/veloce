@@ -16,3 +16,9 @@ thiserror = { workspace = true }
 anyhow = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
+
+[dependencies.veloce-core]
+path = "../veloce-core"
+
+[dev-dependencies]
+proptest = { workspace = true }

@@ -1524,12 +1524,14 @@ dependencies = [
  "async-trait",
  "crossbeam-channel",
  "crossterm",
+ "proptest",
  "ratatui",
  "taffy",
  "thiserror",
  "tokio",
  "tracing",
  "tracing-subscriber",
+ "veloce-core",
 ]
 
 [[package]]
@@ -1540,12 +1542,15 @@ dependencies = [
  "async-trait",
  "crossbeam-channel",
  "crossterm",
+ "insta",
  "ratatui",
  "taffy",
  "thiserror",
  "tokio",
  "tracing",
  "tracing-subscriber",
+ "veloce-core",
+ "veloce-layout",
 ]
 
 [[package]]
@@ -1562,6 +1567,9 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-subscriber",
+ "veloce-core",
+ "veloce-layout",
+ "veloce-render",
 ]
 
 [[package]]
@@ -1583,6 +1591,7 @@ dependencies = [
  "tokio",
  "tracing",
  "tracing-subscriber",
+ "veloce-core",
 ]
 
 [[package]]

@@ -23,3 +23,6 @@ assert_cmd = { workspace = true }
 insta = { workspace = true }
 proptest = { workspace = true }
 criterion = { workspace = true }
+
+[dependencies.veloce-core]
+path = "../veloce-core"
