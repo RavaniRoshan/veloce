@@ -18,18 +18,23 @@ tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 
 [dependencies.veloce-core]
+version = "0.1.0"
 path = "../veloce-core"
 
 [dependencies.veloce-layout]
+version = "0.1.0"
 path = "../veloce-layout"
 
 [dependencies.veloce-render]
+version = "0.1.0"
 path = "../veloce-render"
 
 [dependencies.veloce-router]
+version = "0.1.0"
 path = "../veloce-router"
 
 [dependencies.veloce-runtime]
+version = "0.1.0"
 path = "../veloce-runtime"
 
 [dev-dependencies]

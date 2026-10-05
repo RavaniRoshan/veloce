@@ -25,4 +25,5 @@ proptest = { workspace = true }
 criterion = { workspace = true }
 
 [dependencies.veloce-core]
+version = "0.1.0"
 path = "../veloce-core"
