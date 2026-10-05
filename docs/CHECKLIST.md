@@ -29,4 +29,16 @@ BROKEN/MISSING/PARTIAL (not allowed to remain for P0/P1 at release), UNVERIFIED.
 - C5 P0 [T] WORKS: `ten_k_interleaved_events_no_deadlock`.
 - C6 P0 [L] WORKS: `no_shared_mutable_state_in_public_api` lint gate.
 
-## D..H: UNVERIFIED (later milestones).
+## D View lifecycle and hydration (M3)
+- D1 P0 [T] WORKS: `any_view_is_dyn_safe` — Box<dyn AnyView> enter/poll/view.
+- D2 P0 [T] WORKS: `hydration_fallback_then_ready_no_flicker` — fallback first frame, hydrated after, never reverts.
+- D3 P0 [T] WORKS: `abort_mid_load_cancels_task_and_drops_view` — abort drops view, no dangling task.
+- D4 P0 [T] WORKS: `handle_key_consumed_before_focus_manager` — true return suppresses global routing.
+
+## E Router and shells (M4)
+- E1 P0 [T] WORKS: `pop_refuses_root`, `replace_swaps_top_and_aborts_load`.
+- E2 P0 [T] WORKS: `wrapper_chrome_persists_across_replace` — HEADER survives replace.
+- E3 P0 [T] WORKS: `modal_overlays_previous_route_with_backdrop` + `modal_gets_precedence_over_route_for_keys`.
+- E4 P0 [P] WORKS: `reference_app_hydrates_deploys_and_restores` — full PTY run of the reference example with captured output printed.
+
+## F..H: UNVERIFIED (later milestones).

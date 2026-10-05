@@ -23,3 +23,11 @@
 - C1 PTY e2e ingest verified; C6 shared-mut lint gate added.
 
 Milestones 0-2 complete. All P0 rows in A, B, C are WORKS or OWNER-VERIFY; zero BROKEN/MISSING/PARTIAL.
+
+## 2026-10-05 __M3-M4__
+- View trait (async_trait load/fallback/update/view/handle_key), ViewAdapter with hydration machine (Idle->Loading->Ready|Failed), abort_load.
+- AnyView dyn dispatch + ViewAdapter; D1-D4 tests pass.
+- Element::Overlay centered 60% modal + darkened backdrop via taffy Position::Absolute; Placed rects via DFS walk.
+- Router: route table, stack, push/pop/replace, root-pop refused, modal key precedence, NavCommand queue via cx.
+- VeloceApp::run: ingestion thread, 60 FPS interval, router.step, CrosstermBackend draw, 'q' quits.
+- reference_app example runs on PTY: hydration, deploy streaming, Live, terminal restored (output evidenced).
