@@ -6,6 +6,10 @@ pub enum Element {
     Text(Text),
     Spacer(Spacer),
     ScrollView(ScrollView),
+    Overlay {
+        below: Box<Element>,
+        overlay: Box<Element>,
+    },
 }
 
 #[derive(Debug, Clone)]
@@ -129,6 +133,21 @@ impl Spacer {
 }
 
 #[derive(Debug, Clone)]
+pub struct Overlay {
+    pub below: Box<Element>,
+    pub overlay: Box<Element>,
+}
+
+impl Overlay {
+    pub fn new(below: impl Into<Element>, overlay: impl Into<Element>) -> Self {
+        Self {
+            below: Box::new(below.into()),
+            overlay: Box::new(overlay.into()),
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct ScrollView {
     pub style: Style,
     pub children: Vec<Element>,
@@ -183,6 +202,15 @@ impl From<Text> for Element {
 impl From<ScrollView> for Element {
     fn from(s: ScrollView) -> Self {
         Element::ScrollView(s)
+    }
+}
+
+impl From<Overlay> for Element {
+    fn from(o: Overlay) -> Self {
+        Element::Overlay {
+            below: o.below,
+            overlay: o.overlay,
+        }
     }
 }
 

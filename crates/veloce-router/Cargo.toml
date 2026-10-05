@@ -25,3 +25,7 @@ path = "../veloce-layout"
 
 [dependencies.veloce-render]
 path = "../veloce-render"
+
+[dev-dependencies]
+veloce-layout = { path = "../veloce-layout" }
+veloce-render = { path = "../veloce-render" }

@@ -22,3 +22,6 @@ path = "../veloce-core"
 
 [dev-dependencies]
 proptest = { workspace = true }
+
+[dev-dependencies.veloce-render]
+path = "../veloce-render"

@@ -1,26 +1,47 @@
 use ratatui::buffer::Buffer;
-use ratatui::style::{Modifier, Style};
+use ratatui::layout::Rect;
+use ratatui::style::{Color, Modifier, Style};
 use ratatui::widgets::{Block, BorderType};
 
 use veloce_core::{BorderStyle, Element};
-use veloce_layout::resolve_rects;
+use veloce_layout::{resolve_rects, Placed};
 
 pub fn render(element: &Element, buf: &mut Buffer) {
     let rects = resolve_rects(element, buf.area.width, buf.area.height);
-    let mut it = rects.iter();
-    render_node(element, buf, &mut it);
+    let mut i = 0;
+    render_node(element, buf, &rects, &mut i);
 }
 
-fn render_node(
-    element: &Element,
-    buf: &mut Buffer,
-    rects: &mut std::slice::Iter<'_, veloce_layout::Placed>,
-) {
-    let abs = match rects.next() {
-        Some(p) => p.rect,
-        None => return,
-    };
+fn render_node(element: &Element, buf: &mut Buffer, rects: &[Placed], i: &mut usize) -> Rect {
+    let abs = rects[*i].rect;
+    *i += 1;
     match element {
+        Element::Overlay { below, overlay } => {
+            render_node(below, buf, rects, i);
+            let modal_abs = rects[*i].rect;
+            let y0 = abs.y;
+            let x0 = abs.x;
+            let y1 = abs.y + abs.height;
+            let x1 = abs.x + abs.width;
+            for y in y0..y1 {
+                for x in x0..x1 {
+                    let in_modal = x >= modal_abs.x
+                        && x < modal_abs.x + modal_abs.width
+                        && y >= modal_abs.y
+                        && y < modal_abs.y + modal_abs.height;
+                    if !in_modal {
+                        if let Some(cell) = buf.cell_mut((x, y)) {
+                            // Dimming: keep the underlying symbol, darken the fg.
+                            let sym = cell.symbol().to_string();
+                            cell.set_symbol(if sym.trim().is_empty() { "░" } else { &sym });
+                            cell.set_style(Style::default().fg(Color::DarkGray));
+                        }
+                    }
+                }
+            }
+            render_node(overlay, buf, rects, i);
+            abs
+        }
         Element::Flex(f) => {
             if let Some(border) = f.style.border {
                 let block = Block::default()
@@ -32,8 +53,9 @@ fn render_node(
                 ratatui::widgets::Widget::render(block, abs, buf);
             }
             for child in &f.children {
-                render_node(child, buf, rects);
+                render_node(child, buf, rects, i);
             }
+            abs
         }
         Element::ScrollView(s) => {
             if let Some(border) = s.style.border {
@@ -46,8 +68,9 @@ fn render_node(
                 ratatui::widgets::Widget::render(block, abs, buf);
             }
             for child in &s.children {
-                render_node(child, buf, rects);
+                render_node(child, buf, rects, i);
             }
+            abs
         }
         Element::Text(t) => {
             let mut style = Style::default();
@@ -59,8 +82,9 @@ fn render_node(
             }
             let max = abs.width as usize;
             buf.set_stringn(abs.x, abs.y, &t.content, max, style);
+            abs
         }
-        Element::Spacer(_) => {}
+        Element::Spacer(_) => abs,
     }
 }
 

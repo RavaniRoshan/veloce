@@ -60,6 +60,44 @@ fn build_node(tree: &mut TaffyTree, nodes: &mut Vec<NodeId>, element: &Element) 
             tree.new_with_children(to_taffy(&s.style, Some(element)), &children)
                 .expect("taffy node")
         }
+        Element::Overlay {
+            below: o_below,
+            overlay: o_overlay,
+        } => {
+            let below = build_node(tree, nodes, o_below);
+            let overlay = build_node(tree, nodes, o_overlay);
+            tree.set_style(
+                overlay,
+                taffy::Style {
+                    position: taffy::Position::Absolute,
+                    inset: taffy::Rect {
+                        top: taffy::LengthPercentageAuto::percent(0.2),
+                        left: taffy::LengthPercentageAuto::percent(0.2),
+                        right: taffy::LengthPercentageAuto::auto(),
+                        bottom: taffy::LengthPercentageAuto::auto(),
+                    },
+                    size: taffy::Size {
+                        width: taffy::Dimension::percent(0.6),
+                        height: taffy::Dimension::percent(0.6),
+                    },
+                    display: taffy::Display::Flex,
+                    ..Default::default()
+                },
+            )
+            .expect("set style");
+            tree.new_with_children(
+                taffy::Style {
+                    display: taffy::Display::Flex,
+                    size: taffy::Size {
+                        width: taffy::Dimension::percent(1.0),
+                        height: taffy::Dimension::percent(1.0),
+                    },
+                    ..Default::default()
+                },
+                &[below, overlay],
+            )
+            .expect("taffy node")
+        }
         Element::Text(_t) => tree
             .new_leaf(to_taffy(&Style::default(), Some(element)))
             .expect("taffy node"),

@@ -31,3 +31,7 @@ path = "../veloce-router"
 
 [dependencies.veloce-runtime]
 path = "../veloce-runtime"
+
+[dev-dependencies]
+expectrl = { workspace = true }
+anyhow = { workspace = true }

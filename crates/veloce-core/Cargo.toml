@@ -16,3 +16,7 @@ thiserror = { workspace = true }
 anyhow = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
+
+[dev-dependencies]
+veloce-layout = { path = "../veloce-layout" }
+veloce-render = { path = "../veloce-render" }

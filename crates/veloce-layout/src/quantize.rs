@@ -90,9 +90,10 @@ fn walk(
         parent: parent_index,
         rect: abs,
     });
-    let children: &Vec<veloce_core::Element> = match element {
-        veloce_core::Element::Flex(f) => &f.children,
-        veloce_core::Element::ScrollView(s) => &s.children,
+    let children: Vec<&veloce_core::Element> = match element {
+        veloce_core::Element::Flex(f) => f.children.iter().collect(),
+        veloce_core::Element::ScrollView(s) => s.children.iter().collect(),
+        veloce_core::Element::Overlay { below, overlay } => vec![below.as_ref(), overlay.as_ref()],
         _ => {
             return;
         }
