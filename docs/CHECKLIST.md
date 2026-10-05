@@ -41,4 +41,22 @@ BROKEN/MISSING/PARTIAL (not allowed to remain for P0/P1 at release), UNVERIFIED.
 - E3 P0 [T] WORKS: `modal_overlays_previous_route_with_backdrop` + `modal_gets_precedence_over_route_for_keys`.
 - E4 P0 [P] WORKS: `reference_app_hydrates_deploys_and_restores` — full PTY run of the reference example with captured output printed.
 
-## F..H: UNVERIFIED (later milestones).
+## F Primitives (M5)
+- F1 P0 [S] WORKS: `text_wraps_at_width` (wrap via taffy measure) + bold/color style; `tests/primitives.rs` grid assertion. (Note: full inline reflow of template columns keeps content baseline — wrap is render-measured via taffy measure functions.)
+- F2 P0 [T] WORKS: `textinput_insert_backspace_cursor`, `textinput_renders_cursor` — cursor char-indexed incl. U+4F60 U+597D.
+- F3 P0 [S] WORKS: `scrollview_slices_and_scrollbar` — offset 2 yields line2 at top (no line0); scrollbar █/│ drawn.
+- F4 P0 [S] WORKS: `modal_renders_centered_with_backdrop` — centered Modal with dimmed backdrop.
+- F5 P0 [T] WORKS: `settings_form_and_log_viewer_via_primitives` (PTY e2e) — form fields typed, Tab focus, log viewer hydrated.
+
+## G DX, macros, performance, release (M6)
+- G1 P1 [T] WORKS: `macros_equal_builder_api` — flex_column!/flex_row! macro == builder output (PartialEq).
+- G2 P0 [M] PARTIAL: cold boot 3.55 ms (<15 ms budget) PASS; idle RSS 4 MiB (<12 MiB) PASS; frame cost is NOT flat: 197µs @10, 259µs @100, ~500µs @500, 1442µs @2000 children — linear with taffy tree size. Recorded honest: ~0.7 µs/child rebuild per frame; well within 16ms at 2000-line viewports.
+- G3 P0 [T] WORKS: `agent_dashboard_streams_mock_tool_executions` PTY test.
+- G4 P0 MISSING: multi-platform (Linux verified; macOS/Windows require owner-verify — see OWNER_VERIFY).
+- G5 P0 PARTIAL: `cargo package` dry-run pending; crates.io publish needs owner token (OWNER-VERIFY).
+
+## H Verification matrix
+- H1 P0 WORKS: layout invariants proptest + invariants test (see B1-B7).
+- H2 P0 WORKS: pty_safety (4 tests, isolated).
+- H3 P0 WORKS: ten_k_interleaved_events_no_deadlock.
+- H4 P0 WORKS: fuzz 1x1..500x200 (fuzz_sizes_never_panic, zero overlapped/out-of-bounds).

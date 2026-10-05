@@ -1,6 +1,6 @@
 use crate::style::{BorderStyle, SizeSpec, Style};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Element {
     Flex(Flex),
     Text(Text),
@@ -10,9 +10,11 @@ pub enum Element {
         below: Box<Element>,
         overlay: Box<Element>,
     },
+    TextInput(TextInput),
+    Modal(Modal),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Flex {
     pub style: Style,
     pub children: Vec<Element>,
@@ -80,7 +82,7 @@ impl Flex {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Text {
     pub content: String,
     pub bold: bool,
@@ -117,7 +119,7 @@ impl From<&str> for Text {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Spacer {
     pub grow: f32,
 }
@@ -132,7 +134,7 @@ impl Spacer {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Overlay {
     pub below: Box<Element>,
     pub overlay: Box<Element>,
@@ -147,10 +149,11 @@ impl Overlay {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ScrollView {
     pub style: Style,
     pub children: Vec<Element>,
+    pub offset: u16,
 }
 
 impl ScrollView {
@@ -158,7 +161,13 @@ impl ScrollView {
         Self {
             style: Style::default(),
             children: Vec::new(),
+            offset: 0,
         }
+    }
+
+    pub fn offset(mut self, offset: u16) -> Self {
+        self.offset = offset;
+        self
     }
 
     pub fn flex_grow(mut self, grow: f32) -> Self {
@@ -190,6 +199,139 @@ impl Default for ScrollView {
 impl From<Flex> for Element {
     fn from(f: Flex) -> Self {
         Element::Flex(f)
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct TextInput {
+    pub content: String,
+    pub cursor: usize, // char index
+    pub placeholder: Option<String>,
+}
+
+impl TextInput {
+    pub fn new() -> Self {
+        Self {
+            content: String::new(),
+            cursor: 0,
+            placeholder: None,
+        }
+    }
+
+    pub fn with_text(content: impl Into<String>) -> Self {
+        let c = content.into();
+        let len = c.chars().count();
+        Self {
+            content: c,
+            cursor: len,
+            placeholder: None,
+        }
+    }
+
+    pub fn placeholder(mut self, p: impl Into<String>) -> Self {
+        self.placeholder = Some(p.into());
+        self
+    }
+
+    /// Returns true when the key mutates the field's state.
+    pub fn handle_key(&mut self, key: &crossterm::event::KeyEvent) -> bool {
+        use crossterm::event::KeyCode::*;
+        match &key.code {
+            Char(c) => {
+                let byte_index: usize = self
+                    .content
+                    .char_indices()
+                    .nth(self.cursor)
+                    .map(|(i, _)| i)
+                    .unwrap_or(self.content.len());
+                self.content.insert(byte_index, *c);
+                self.cursor += 1;
+                true
+            }
+            Backspace => {
+                if self.cursor > 0 {
+                    let byte_index: usize = self
+                        .content
+                        .char_indices()
+                        .nth(self.cursor - 1)
+                        .map(|(i, _)| i)
+                        .unwrap_or(0);
+                    let byte_len = self
+                        .content
+                        .chars()
+                        .nth(self.cursor - 1)
+                        .map(|c| c.len_utf8())
+                        .unwrap_or(0);
+                    self.content
+                        .replace_range(byte_index..byte_index + byte_len, "");
+                    self.cursor -= 1;
+                    true
+                } else {
+                    false
+                }
+            }
+            Left => {
+                if self.cursor > 0 {
+                    self.cursor -= 1;
+                }
+                true
+            }
+            Right => {
+                let len = self.content.chars().count();
+                if self.cursor < len {
+                    self.cursor += 1;
+                }
+                true
+            }
+            Home => {
+                self.cursor = 0;
+                true
+            }
+            End => {
+                self.cursor = self.content.chars().count();
+                true
+            }
+            _ => false,
+        }
+    }
+
+    pub fn into_element(self) -> Element {
+        Element::TextInput(self)
+    }
+}
+
+impl Default for TextInput {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl From<TextInput> for Element {
+    fn from(t: TextInput) -> Self {
+        Element::TextInput(t)
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Modal {
+    pub content: Box<Element>,
+}
+
+impl Modal {
+    pub fn new(content: impl Into<Element>) -> Self {
+        Self {
+            content: Box::new(content.into()),
+        }
+    }
+
+    pub fn into_element(self) -> Element {
+        Element::Modal(self)
+    }
+}
+
+impl From<Modal> for Element {
+    fn from(m: Modal) -> Self {
+        Element::Modal(m)
     }
 }
 

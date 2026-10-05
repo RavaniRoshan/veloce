@@ -4,7 +4,7 @@ use veloce_core::{Element, SizeSpec, Style};
 /// Parallel to the Element tree: `nodes[i]` is the taffy node for the i-th
 /// element in pre-order (DFS) traversal.
 pub struct LayoutTree {
-    pub tree: TaffyTree,
+    pub tree: TaffyTree<String>,
     pub nodes: Vec<NodeId>,
 }
 
@@ -23,11 +23,24 @@ impl LayoutTree {
     pub fn compute(&mut self, cols: u16, rows: u16) {
         let root = self.root();
         self.tree
-            .compute_layout(
+            .compute_layout_with_measure(
                 root,
                 Size {
                     width: AvailableSpace::Definite(cols as f32),
                     height: AvailableSpace::Definite(rows as f32),
+                },
+                |_known, available_space, _node_id, ctx, _style| match ctx {
+                    Some(text) if !text.is_empty() => {
+                        let avail_w = match available_space.width {
+                            AvailableSpace::Definite(w) => w,
+                            _ => text.chars().count() as f32,
+                        };
+                        let chars = text.chars().count() as f32;
+                        let width = avail_w.max(1.0).min(chars);
+                        let height = (chars / width).ceil().max(1.0);
+                        Size { width, height }
+                    }
+                    _ => Size::ZERO,
                 },
             )
             .expect("taffy layout failed");
@@ -38,7 +51,7 @@ impl LayoutTree {
     }
 }
 
-fn build_node(tree: &mut TaffyTree, nodes: &mut Vec<NodeId>, element: &Element) -> NodeId {
+fn build_node(tree: &mut TaffyTree<String>, nodes: &mut Vec<NodeId>, element: &Element) -> NodeId {
     let my_index = nodes.len();
     nodes.push(NodeId::from(0u64)); // placeholder keeps DFS indices aligned
     let id = match element {
@@ -98,8 +111,70 @@ fn build_node(tree: &mut TaffyTree, nodes: &mut Vec<NodeId>, element: &Element) 
             )
             .expect("taffy node")
         }
-        Element::Text(_t) => tree
-            .new_leaf(to_taffy(&Style::default(), Some(element)))
+        Element::Modal(m) => {
+            let below = tree
+                .new_leaf(taffy::Style {
+                    display: taffy::Display::Flex,
+                    size: taffy::Size {
+                        width: taffy::Dimension::percent(1.0),
+                        height: taffy::Dimension::percent(1.0),
+                    },
+                    ..Default::default()
+                })
+                .expect("taffy node");
+            let overlay = build_node(tree, nodes, &m.content);
+            tree.set_style(
+                overlay,
+                taffy::Style {
+                    position: taffy::Position::Absolute,
+                    inset: taffy::Rect {
+                        top: taffy::LengthPercentageAuto::percent(0.2),
+                        left: taffy::LengthPercentageAuto::percent(0.2),
+                        right: taffy::LengthPercentageAuto::auto(),
+                        bottom: taffy::LengthPercentageAuto::auto(),
+                    },
+                    size: taffy::Size {
+                        width: taffy::Dimension::percent(0.6),
+                        height: taffy::Dimension::percent(0.6),
+                    },
+                    display: taffy::Display::Flex,
+                    ..Default::default()
+                },
+            )
+            .expect("set style");
+            tree.new_with_children(
+                taffy::Style {
+                    display: taffy::Display::Flex,
+                    size: taffy::Size {
+                        width: taffy::Dimension::percent(1.0),
+                        height: taffy::Dimension::percent(1.0),
+                    },
+                    ..Default::default()
+                },
+                &[below, overlay],
+            )
+            .expect("taffy node")
+        }
+        Element::Text(t) => tree
+            .new_leaf_with_context(
+                taffy::Style {
+                    display: taffy::Display::Flex,
+                    flex_shrink: 0.0,
+                    ..Default::default()
+                },
+                t.content.clone(),
+            )
+            .expect("taffy node"),
+        Element::TextInput(ti) => tree
+            .new_leaf(taffy::Style {
+                display: taffy::Display::Flex,
+                size: taffy::Size {
+                    width: taffy::Dimension::length(ti.content.chars().count().max(10) as f32),
+                    height: taffy::Dimension::length(1.0),
+                },
+                flex_shrink: 0.0,
+                ..Default::default()
+            })
             .expect("taffy node"),
         Element::Spacer(_) => tree
             .new_leaf(to_taffy(&Style::default(), Some(element)))

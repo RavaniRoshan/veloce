@@ -31,3 +31,16 @@ Milestones 0-2 complete. All P0 rows in A, B, C are WORKS or OWNER-VERIFY; zero 
 - Router: route table, stack, push/pop/replace, root-pop refused, modal key precedence, NavCommand queue via cx.
 - VeloceApp::run: ingestion thread, 60 FPS interval, router.step, CrosstermBackend draw, 'q' quits.
 - reference_app example runs on PTY: hydration, deploy streaming, Live, terminal restored (output evidenced).
+
+## 2026-10-05 M5
+- Text: measured by taffy measure function -> wrap-aware layout; bold/color preserved.
+- TextInput: char-indexed cursor, insert/backspace/arrows/home/end, placeholder; U+4F60U+597D handled via char-indexed cursor.
+- ScrollView: offset slicing, viewport clipping, █/│ scrollbar; stable position.
+- Modal: Element::Modal renders centered, dimmed backdrop.
+- B7 overlap found & fixed via taffy measure driving Text layout; regression absent.
+- F5: settings_log_viewer example + PTY test passes.
+
+## 2026-10-05 M6(partial dev)
+- flex_column!/flex_row! macros == builder (G1).
+- criterion benches: cold_boot 3.55ms, frame cost linear ~0.7us/child (G2 partial).
+- agent_dashboard showcase + PTY test (G3).

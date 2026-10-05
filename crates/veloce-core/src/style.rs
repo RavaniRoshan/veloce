@@ -18,7 +18,7 @@ pub enum SizeSpec {
 }
 
 /// Style attached to any element. Mapped to taffy::Style in veloce-layout.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Style {
     pub direction: FlexDir,
     pub gap: u16,

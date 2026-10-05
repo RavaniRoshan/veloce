@@ -94,6 +94,7 @@ fn walk(
         veloce_core::Element::Flex(f) => f.children.iter().collect(),
         veloce_core::Element::ScrollView(s) => s.children.iter().collect(),
         veloce_core::Element::Overlay { below, overlay } => vec![below.as_ref(), overlay.as_ref()],
+        veloce_core::Element::Modal(m) => vec![m.content.as_ref()],
         _ => {
             return;
         }

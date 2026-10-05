@@ -4,6 +4,8 @@ pub use veloce_render as render;
 pub use veloce_router as router;
 
 pub mod app;
+#[macro_use]
+pub mod macros;
 pub use app::VeloceApp;
 pub use veloce_runtime as runtime;
 
