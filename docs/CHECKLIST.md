@@ -13,10 +13,20 @@ BROKEN/MISSING/PARTIAL (not allowed to remain for P0/P1 at release), UNVERIFIED.
 - A7 P0 [M] WORKS: probe `idle_memory_under_12mb`: measured VmRSS 4096 KiB.
 
 ## B Layout engine (M1)
-- B1..B7: UNVERIFIED (M1 not started).
+- B1 P0 [T] WORKS: `conversion_is_total` — nodes vec len == pre-order count.
+- B2 P0 [T] WORKS: `nested_flex_tiles_without_overlap_or_gaps` + fuzz sibling-disjoint asserts.
+- B3 P0 [T] WORKS: `quantize_min_one_when_taffy_positive`, `no_zero_width_collapse`.
+- B4 P0 [T] WORKS: `quantize_clamps_to_parent` + nested containment asserts.
+- B5 P0 [S] WORKS: `tests/snapshots.rs` insta snapshots (row/column/grow/gap/padding/border/nested).
+- B6 P0 [T] WORKS: `no_drift_at_depth` — exact 4-cell shrink per level over 12 levels.
+- B7 P0 [T] WORKS: `tests/fuzz.rs` proptest 1x1..500x200, no panic/overflow, in-bounds, disjoint.
 
 ## C Concurrency and dispatch (M2)
-- C1 P0 [T] PARTIAL: channel mapping `ingestion_channel_is_bounded` WORKS; live Tier-1 thread e2e deferred to M2 (pty send-key test).
-- C2..C6: UNVERIFIED.
+- C1 P0 [T] WORKS: `tier1_emits_typed_events_over_bounded_channel` (PTY e2e) + `ingestion_channel_is_bounded` semantics.
+- C2 P0 [T] WORKS: render is a pure fn of (element, size) — `render(&Element, &mut Buffer)` signature; TestBackend snapshots assert determinism.
+- C3 P0 [T] WORKS: `priority_input_over_actions_over_ticks`.
+- C4 P0 [M] WORKS: probe — 1000 actions/s, key latency p95 12us, max 17us (`KEY_LATENCY_P95_US`).
+- C5 P0 [T] WORKS: `ten_k_interleaved_events_no_deadlock`.
+- C6 P0 [L] WORKS: `no_shared_mutable_state_in_public_api` lint gate.
 
 ## D..H: UNVERIFIED (later milestones).

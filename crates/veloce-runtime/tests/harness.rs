@@ -97,3 +97,39 @@ fn ingestion_channel_is_bounded() {
     assert!(tx.try_send(veloce_runtime::AppEvent::Resize(3, 3)).is_err());
     assert_eq!(rx.recv().unwrap(), veloce_runtime::AppEvent::Resize(1, 1));
 }
+
+#[test]
+fn no_shared_mutable_state_in_public_api() {
+    // C6: no Arc<Mutex>/Rc<RefCell> exposed in public signatures.
+    let mut root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    root.pop();
+    root.pop();
+    let mut bad = vec![];
+    for entry in walk_dirs(&root) {
+        let text = std::fs::read_to_string(&entry).unwrap();
+        for (i, line) in text.lines().enumerate() {
+            let hits = line.contains("Arc<Mutex")
+                || line.contains("Rc<RefCell")
+                || (line.contains("pub ") && (line.contains("Mutex") || line.contains("RefCell")));
+            if hits {
+                bad.push(format!("{}:{}: {}", entry.display(), i + 1, line));
+            }
+        }
+    }
+    assert!(
+        bad.is_empty(),
+        "shared-mutable-state in public API:\n{}",
+        bad.join("\n")
+    );
+}
+
+fn walk_dirs(dir: &std::path::Path) -> Vec<std::path::PathBuf> {
+    let mut out = vec![];
+    for e in std::fs::read_dir(dir).unwrap() {
+        let p = e.unwrap().path();
+        if p.is_dir() && p.file_name().unwrap() == "src" {
+            out.extend(walk_files(&p));
+        }
+    }
+    out
+}

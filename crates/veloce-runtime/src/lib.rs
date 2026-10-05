@@ -2,6 +2,7 @@ use std::sync::Once;
 
 use thiserror::Error;
 
+pub mod drain;
 pub mod guard;
 pub mod hooks;
 pub mod ingest;
@@ -9,8 +10,9 @@ pub mod logging;
 pub mod signals;
 pub mod tick;
 
+pub use drain::{drain_prioritized, Drained};
 pub use guard::TerminalGuard;
-pub use ingest::AppEvent;
+pub use ingest::{spawn_ingestion_thread, AppEvent};
 pub use logging::init_tracing;
 pub use signals::install_signal_handlers;
 pub use tick::tick_interval;
