@@ -1,20 +1,31 @@
 ---
 title: Introduction
-description: Veloce documentation — start here.
+description: What Veloce is and when to use it.
 ---
 
-# Veloce documentation
+# Introduction
 
-Veloce is an opinionated application-layer framework for terminal UIs in Rust.
-It feels like Next.js/Remix to a web developer and like idiomatic Rust to a
-systems developer: a stack router, declarative views with async hydration,
-taffy-backed flexbox layout, and a frame-budgeted render loop.
+Veloce is an application framework for terminal user interfaces in Rust. If
+you have built apps with Next.js or Remix, the mental model transfers
+directly: you declare **routes** that render **views**, views declare their
+**data dependencies**, and the framework owns everything in between — the
+event loop, the layout math, and the terminal itself.
 
-- **Design** — the 70-line design note: contract, AST shape, quantization, threading.
-- **Checklist** — every requirement with its proof (test name or measured probe).
-- **Progress** — milestone log with measured runs.
-- **Decisions** — every judgment call, recorded.
-- **Parity** — capabilities deliberately deferred.
+You will like Veloce if you are building dashboards, forms, log viewers,
+deployment monitors, or agent harnesses that live in the terminal — and you
+would rather describe screens than orchestrate threads, channels, and escape
+codes.
 
-> Every claim in these docs is backed by a named test or a measured probe.
-> Anything unverified is labeled UNVERIFIED.
+## How it works
+
+- **Routes** map paths to views. `VeloceApp` holds the stack: push, pop,
+  replace. The root route cannot be popped.
+- **Views** are structs that implement five methods: `load`, `fallback`,
+  `update`, `view`, and `handle_key`.
+- **Actions** are your enum. State changes only inside `update`, and
+  background work reports back through a dispatcher — never a lock.
+- **Layout** is flexbox. You nest `Flex`, `Text`, and `Spacer`; taffy
+  computes the geometry and Veloce snaps it to terminal cells.
+- **Runtime** restores the terminal on panic, `Ctrl-C`, and normal exit.
+
+Start with the [Quickstart](/quickstart), then read [Views and actions](/views-actions).

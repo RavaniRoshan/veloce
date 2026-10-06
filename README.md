@@ -28,10 +28,8 @@ If you know Next.js or Remix, you already know Veloce: routes render views,
 views declare data dependencies, and the framework handles the rest.
 
 > [!NOTE]
-> `docs/PRD.md` was never committed to this repo, so the kickoff brief is
-> treated as the spec. Every claim in this README is backed by a named test
-> or a measured probe — see [Verification](#verification) and
-> [`docs/CHECKLIST.md`](./docs/CHECKLIST.md).
+> Every claim in this README is backed by a named test or a measured probe —
+> see [Verification](#verification) and the Benchmarks docs page.
 
 ## Features
 
@@ -259,8 +257,7 @@ cargo clippy --all-targets -- -D warnings   # zero warnings enforced
 cargo bench -p veloce --bench frame         # criterion baselines
 ```
 
-What the suite proves (each row cites its test in
-[`docs/CHECKLIST.md`](./docs/CHECKLIST.md)):
+What the suite proves (each test is named in `crates/*/tests/`):
 
 - Terminal restored on normal exit, panic, `SIGINT`, `SIGTERM` — on a real PTY.
 - Nested flex tiles with no overlaps, no zero-width collapse, no rounding drift
@@ -282,18 +279,15 @@ Measured numbers (Linux x86_64, this repo):
 > [!NOTE]
 > Per-frame cost is *not* flat: relayout is O(children) because the element
 > and taffy trees are rebuilt each frame. A memoized layout cache is the
-> planned fix — recorded in [`docs/PARITY.md`](./docs/PARITY.md) along with
-> everything else deliberately deferred (hot-reload, mouse-wheel scroll,
-> non-terminal backends, …).
+> planned fix — listed with the other deferred work on the Parity docs page
+> (hot-reload, mouse-wheel scroll, non-terminal backends, …).
 
 ## Docs & site
 
-- [`docs/DESIGN.md`](./docs/DESIGN.md) — the 70-line design note: contract,
-  AST shape, quantization, threading.
-- [`docs/CHECKLIST.md`](./docs/CHECKLIST.md) — every requirement with its proof.
-- [`docs/PROGRESS.md`](./docs/PROGRESS.md) — milestone log with measured runs.
-- [`docs/DECISIONS.md`](./docs/DECISIONS.md) — every judgment call, recorded.
-- [`docs/PARITY.md`](./docs/PARITY.md) — capabilities deliberately deferred.
+User documentation lives on the Blume docs site — quickstart, views &
+actions, layout, routing, primitives, examples, benchmarks, FAQ. No
+implementation-phase paperwork is published there.
+
 - [`site/DESIGN.md`](./site/DESIGN.md) — the website design language, derived
   from opensend.cc (tokens, type, layout rhythm, components).
 

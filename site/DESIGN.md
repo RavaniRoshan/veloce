@@ -1,69 +1,83 @@
 # Veloce site design language
 
-Source: opensend.cc landing page (public site; the marketing repo itself is
-private, so this file records the observed design language — tokens, type,
-layout rhythm, and components — as the contract for the Veloce main site).
+Source: the opensend.cc landing page (observed from the live site; its
+marketing repo is private, so this file records the design language —
+tokens, type, layout rhythm, components — as the contract for this page).
 
-## Tokens
+Default state is **dark**. Light mode exists behind the theme toggle and
+reuses the same layout with swapped tokens.
+
+## Tokens (dark)
 
 | Token | Value | Use |
 |---|---|---|
-| `--paper` | `#f6f4ee` | page background (warm paper) |
-| `--paper-2` | `#efece3` | secondary surfaces |
-| `--ink` | `#17130c` | text, primary buttons |
-| `--muted` | `#6f6a5e` | secondary copy, nav links |
-| `--line` | `#e2ddd0` | hairline borders, section dividers |
-| `--accent` | `#ff4d00` | CTAs on hover, numerals, serif-italic accents, links |
-| `--card` | `#fffdf8` | cards, pills, panels |
-| `--dark` / `--dark-2` | `#16130e` / `#221d15` | terminal window, code blocks, stat cards |
-| `--radius` | `16px` | cards, terminal, panels, buttons `12px` |
+| `--bg` | `#000000` | outer page + rails (black, never navy) |
+| `--surface` / `--surface-tint` | `#141415` / `#161616` | cards, tiles |
+| `--border` / `--border-strong` | `#ffffff1a` / `#ffffff26` | hairlines, card borders |
+| `--fg` / `--fg-muted` / `--fg-faint` | `#fafafa` / `#a1a1a1` / `#737373` | copy tiers |
+| `--brand` / `--brand-fg` | `#ededed` / `#0a0a0a` | primary button fg/bg |
+| `--success` | `#4ade80` | status dots only, never a page accent |
+| `--warning` | `#fbbf24` | honest-caveat marker only |
+| `--terminal-bg` / `--terminal-fg` | `#0a0a0a` / `#f5f5f5` | mock windows |
+| `--border-double` / `--border-double-glow` | `#171717` / `#1717174f` | section dividers, rails |
+| `--corner-mark` | `#525252` | 13px registration ticks |
+| `--hatch-line` | `#ffffff0d` | outer diagonal hatch |
+| radii | chip 6 · control-sm 8 · control 10 · card 14 · frame 20 · pill 999 | |
+| `--column-max` | `1120px` | rails width |
+| `--section-y` | `80px` desktop / `64px` mobile; hero + final CTA `112px` / `80px` | |
 
-No webfonts: system sans stack for UI, Georgia/Times serif-italic for accent
-words, ui-monospace stack for code and numerals. Works fully offline.
+Headings use a white→gray text gradient; `em` uses a gray gradient
+(`#8a8a8a→#5c5c5c`), italic, *not* a bright accent color. No blue/purple
+glows anywhere; the final CTA glow is grayscale radial + dotgrid only.
 
 ## Type
 
-- H1: clamp(40px, 6.4vw, 72px), weight 650, letter-spacing −0.025em, max ~16ch.
-- H2: clamp(28px, 3.6vw, 40px), weight 650, letter-spacing −0.02em.
-- Every headline ends with (or contains) one serif-italic accent phrase.
-- Kickers: 13px, bold, uppercase, 0.14em tracking, accent color.
-- Body/lede: 17–19px, muted, 1.55–1.6 line-height, max ~620px.
+- Sans: **Bricolage Grotesque** 200–800 (real woff2, `@font-face`, swap).
+- Mono/code: **Geist Mono** (real woff2). Instrument Serif reserved, unused.
+- H1 `.display`: 56px/1.05/−0.03em desktop, 40px mobile, weight 600, balanced.
+- H2 `.st`: 3rem/1.08 desktop, 2rem mobile, weight 600, centered max-w-2xl.
+- Body 16px/1.6, lede 18px muted, small 14px, caption 13px, code 13–14px mono.
+- Never substitute Inter or a generic geometric sans.
 
 ## Layout rhythm (mirrors opensend.cc section order)
 
-1. Sticky blurred nav: brand left, links center, status pill + GitHub right.
-2. Hero: H1 → sub → two CTAs → large product visual (terminal window here,
-   screenshot there) → "Built on …" line → stack marquee (duplicated track,
-   CSS animation).
-3. Triptych (`Route / Render / Restore`): three cards, each with a dark code
-   strip. Opensend's Send/Deliver/See, mapped to the framework's three verbs.
-4. Numbered architecture (`01–04`) + side panel ("what you end up with" +
-   docs link). Opensend's "Your email. Your server." block.
-5. Three steps + side panel with the one cargo command.
-6. Engineering proof grid (replaces the founder story — no persona invented).
-7. Benchmarks: dark stat cards + a dashed honest-caveat callout (replaces
-   pricing cards; no prices invented).
-8. FAQ accordion (`details/summary`, `+`/`–` markers, accent on open).
-9. Final CTA, then footer: brand + tagline, Product / Open source columns,
-   copyright + version row.
+`.hatch` viewport → `.rails` 1120px → header + main + footer. Hatch visible
+only in gutters wider than the rails.
 
-## Components
+1. 56px sticky header: wordmark (inline SVG + text) left, links center
+   (Features, Docs, Benchmarks, FAQ), theme toggle + GitHub button right,
+   hamburger under 768px.
+2. Text-only centered hero (no illustration): status pill → H1 → sub →
+   CTAs → proof row. Then the stack strip (label + 48s marquee, edge fade,
+   pause on hover).
+3. Triptych cells with 144px mock windows (terminal / schema-rows /
+   dashboard skeleton) + full-width setup band + 9 capability cells with
+   24px mono chips. Flush shared 1px borders, no gutters.
+4. Two `.frame`+`.panel` cards: "what you end up with" rows + "how you get
+   there" numbered rows, then a centered guide link.
+5. Three steps with 104px clipped background numerals.
+6. Open/maintainer band (96px tile, no invented persona).
+7. 8-cell wall (128px min): six real dependency crates with locked versions
+   + Star + Docs actions. No fabricated sponsors.
+8. Two get-cards (Run it / Learn it) with checkmark rows.
+9. Benchmarks: stat cells + dashed honest-caveat callout (always present).
+10. FAQ: 8 rows, all closed by default, real usage answers, one-open-at-a-time.
+11. Final CTA with grayscale glow. Footer with status panel (real gate
+    results) + Product / Open source / Docs columns.
 
-- `.btn.solid` (ink fill → accent on hover), `.btn.ghost`.
-- `.pill` status pill with green dot.
-- `.term`: dark window, traffic-light dots, title bar, `pre` body with
-  `.b/.g/.y/.dim` token coloring. Content must be real framework output.
-- `.code`: dark strip, orange keywords, green strings, dim comments.
-- `.stat`: dark card, 34px value with green unit.
-- `.honest`: dashed accent-border callout for caveats. Never ship a benchmark
-  section without one.
-- Marquee: `.track` duplicated content, `slide` 26s linear infinite.
+## Motion
+
+- Reveal: opacity 0 → 1, translateY(16px) → 0, ~0.55s ease-out, 70ms stagger,
+  once per element; disabled under `prefers-reduced-motion`.
+- Buttons: `scale(.97)` press over 0.16s.
+- Marquee: 48s linear infinite, duplicated track, pause on hover, 64px edge
+  masks, static row under reduced motion.
+- FAQ: ~0.2s expand; keyboard accessible, `aria-expanded` via `details`.
 
 ## Rules
 
-- One accent per headline, always serif-italic.
-- Every section: kicker → H2 → lede → content. No exceptions.
-- Hairlines between sections (`1px var(--line)`), generous vertical padding
-  (72–88px desktop).
+- One gray-gradient `em` per headline; never a bright accent headline.
 - Docs links point at the Blume docs site; no second hand-rolled docs page
   may exist in this folder.
+- No invented copy in default state: versions from `Cargo.lock`, gate
+  results from the test suite, links that resolve.
