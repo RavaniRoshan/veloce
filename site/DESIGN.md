@@ -11,11 +11,12 @@ reuses the same layout with swapped tokens.
 
 | Token | Value | Use |
 |---|---|---|
-| `--bg` | `#000000` | outer page + rails (black, never navy) |
-| `--surface` / `--surface-tint` | `#141415` / `#161616` | cards, tiles |
-| `--border` / `--border-strong` | `#ffffff1a` / `#ffffff26` | hairlines, card borders |
-| `--fg` / `--fg-muted` / `--fg-faint` | `#fafafa` / `#a1a1a1` / `#737373` | copy tiers |
-| `--brand` / `--brand-fg` | `#ededed` / `#0a0a0a` | primary button fg/bg |
+| `--bg` | `#0d0b08` dark / `#f6f1e7` light | warm black / warm paper — deliberately not pure `#000` |
+| `--surface` / `--surface-tint` | `#171310` / `#1d1712` dark, `#fffdf7` / `#f1ebe0` light | cards, tiles |
+| `--border` / `--border-strong` | `#ffffff17` / `#ffffff24` dark, `#1c141014` / `#1c141028` light | hairlines, card borders |
+| `--fg` / `--fg-muted` / `--fg-faint` | `#faf7f1` / `#a8a094` / `#6f675c` dark, `#1c1410` / `#6b5f4f` / `#8a7d6b` light | copy tiers |
+| `--brand` / `--brand-fg` | `#ededed` / `#0a0a0a` | primary button fg/bg (unchanged) |
+| `--accent` / `--accent-strong` | `#ff6a2b` / `#ff8552` dark, `#d9480f` / `#b93a0b` light | **signature ember**: kickers, numerals, `+` markers, docs links, tile svg inherits currentColor |
 | `--success` | `#4ade80` | status dots only, never a page accent |
 | `--warning` | `#fbbf24` | honest-caveat marker only |
 | `--terminal-bg` / `--terminal-fg` | `#0a0a0a` / `#f5f5f5` | mock windows |
@@ -26,9 +27,10 @@ reuses the same layout with swapped tokens.
 | `--column-max` | `1120px` | rails width |
 | `--section-y` | `80px` desktop / `64px` mobile; hero + final CTA `112px` / `80px` | |
 
-Headings use a white→gray text gradient; `em` uses a gray gradient
-(`#8a8a8a→#5c5c5c`), italic, *not* a bright accent color. No blue/purple
-glows anywhere; the final CTA glow is grayscale radial + dotgrid only.
+Headings use a warm-white→warm-gray text gradient; `em` uses a warm gray
+gradient, italic. Ember accent appears on kickers, numerals, markers, and
+links only — never as a headline fill. No blue/purple glows anywhere; the
+final CTA glow is grayscale radial + dotgrid only.
 
 ## Type
 
@@ -73,6 +75,18 @@ only in gutters wider than the rails.
 - Marquee: 48s linear infinite, duplicated track, pause on hover, 64px edge
   masks, static row under reduced motion.
 - FAQ: ~0.2s expand; keyboard accessible, `aria-expanded` via `details`.
+
+## Logos
+
+- Every crate/brand mark is an inline SVG `<symbol>` in the page sprite,
+  referenced with `<use>` — never letter-tiles, never plain words as logos.
+- `lg-ratatui` is the project's official `logo-simple.svg` (MIT,
+  ratatui-org/ratatui `assets/`), wrapped in `fill="currentColor"`.
+- `lg-tokio`, `lg-taffy`, `lg-crossterm`, `lg-crossbeam`, `lg-asynctrait`,
+  `lg-veloce` are original stroke marks (24×24, round caps) since those
+  projects publish no fetchable SVG mark. Do not hotlink lookalikes.
+- Tiles size SVG via CSS (`.tile svg` 22px, `.sm-tile` 16px); marks inherit
+  `currentColor` and adapt to both themes.
 
 ## Rules
 

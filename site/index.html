@@ -18,16 +18,17 @@
 }
 :root{
   color-scheme:dark;
-  --bg:#000000; --bg-subtle:#19191a; --surface:#141415; --surface-tint:#161616;
-  --border:#ffffff1a; --border-strong:#ffffff26; --table-divider:#ffffff0f;
-  --fg:#fafafa; --fg-muted:#a1a1a1; --fg-faint:#737373;
-  --brand:#ededed; --brand-fg:#0a0a0a; --brand-soft:#1c1c1c;
+  --bg:#0d0b08; --bg-subtle:#171310; --surface:#171310; --surface-tint:#1d1712;
+  --border:#ffffff17; --border-strong:#ffffff24; --table-divider:#ffffff0d;
+  --fg:#faf7f1; --fg-muted:#a8a094; --fg-faint:#6f675c;
+  --accent:#ff6a2b; --accent-strong:#ff8552;
+  --brand:#ededed; --brand-fg:#0a0a0a; --brand-soft:#211a13;
   --success:#4ade80; --warning:#fbbf24;
   --terminal-bg:#0a0a0a; --terminal-fg:#f5f5f5; --terminal-dot:#404040;
   --gradient-primary:linear-gradient(180deg,#fff 0%,#e5e5e5 100%);
   --gradient-primary-hover:linear-gradient(180deg,#fff 0%,#d4d4d4 100%);
   --gradient-surface:linear-gradient(180deg,#1c1c1c 0%,#141414 100%);
-  --gradient-title-em:linear-gradient(180deg,#8a8a8a 0%,#5c5c5c 100%);
+  --gradient-title-em:linear-gradient(180deg,#9a8f7d 0%,#5f574b 100%);
   --gradient-pill:linear-gradient(180deg,#1c1c1c 0%,#151515 100%);
   --gradient-panel:linear-gradient(180deg,#ffffff05 0%,#17181b40 50%,#17181b40 100%);
   --border-double:#171717; --border-double-glow:#1717174f; --corner-mark:#525252;
@@ -37,13 +38,14 @@
 }
 html[data-theme="light"]{
   color-scheme:light;
-  --bg:#fafafa; --bg-subtle:#f1f1ee; --surface:#ffffff; --surface-tint:#f6f6f4;
-  --border:#00000014; --border-strong:#00000026; --table-divider:#0000000f;
-  --fg:#0a0a0a; --fg-muted:#525252; --fg-faint:#737373;
+  --bg:#f6f1e7; --bg-subtle:#efe8d9; --surface:#fffdf7; --surface-tint:#f1ebe0;
+  --border:#1c141014; --border-strong:#1c141028; --table-divider:#1c14100f;
+  --fg:#1c1410; --fg-muted:#6b5f4f; --fg-faint:#8a7d6b;
+  --accent:#d9480f; --accent-strong:#b93a0b;
   --brand:#0a0a0a; --brand-fg:#fafafa; --brand-soft:#e8e8e6;
   --terminal-bg:#0a0a0a; --terminal-fg:#f5f5f5;
   --gradient-primary:linear-gradient(180deg,#171717 0%,#000 100%);
-  --gradient-title-em:linear-gradient(180deg,#6b6b6b 0%,#a3a3a3 100%);
+  --gradient-title-em:linear-gradient(180deg,#8a7d6b 0%,#b3a78f 100%);
   --gradient-pill:linear-gradient(180deg,#fff 0%,#ececea 100%);
   --gradient-panel:linear-gradient(180deg,#00000005 0%,#00000008 100%);
   --border-double:#e4e4e0; --border-double-glow:#e4e4e04f; --corner-mark:#b5b5ae;
@@ -76,9 +78,9 @@ a{color:inherit;text-decoration:none}
   pointer-events:none;border:0 solid var(--corner-mark);bottom:-1px}
 .corners-b::before{left:-1px;border-bottom-width:1px;border-left-width:1px}
 .corners-b::after{right:-1px;border-bottom-width:1px;border-right-width:1px}
-.title-gradient{background:linear-gradient(#fff,#999);-webkit-background-clip:text;
+.title-gradient{background:linear-gradient(#fffdf7,#b8b0a1);-webkit-background-clip:text;
   background-clip:text;color:transparent}
-html[data-theme="light"] .title-gradient{background:linear-gradient(#111,#555);
+html[data-theme="light"] .title-gradient{background:linear-gradient(#1c1410,#6b5f4f);
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .title-gradient em,.display em{background:var(--gradient-title-em);
   -webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
@@ -260,6 +262,15 @@ html[data-theme="light"] .slot.action:hover .nm{color:#000}
   border-top:1px solid var(--table-divider);display:flex;flex-direction:column;gap:11px}
 .checks li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--fg-muted)}
 .checks svg{flex:none;margin-top:2px;color:var(--success)}
+.kicker{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+.prow .seq{color:var(--accent)}
+.faq summary .pm{color:var(--accent)}
+.centerlink a{color:var(--accent);font-weight:600}
+.centerlink a:hover{color:var(--accent-strong)}
+.btn.secondary:hover{border-color:var(--accent)}
+.tile svg{width:22px;height:22px}
+.tile.sm-tile svg{width:16px;height:16px}
+.logoitem svg{width:22px;height:22px}
 .finenote{text-align:center;color:var(--fg-faint);font-size:13px;margin-top:22px;line-height:1.7}
 /* faq */
 .faq{max-width:42rem;margin:56px auto 0}
@@ -314,6 +325,42 @@ svg.ic.sm{width:16px;height:16px}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<!-- Veloce brand mark (original): prompt in a rounded square -->
+<symbol id="lg-veloce" viewBox="0 0 32 32">
+<rect x="3" y="3" width="26" height="26" rx="7" fill="none" stroke="currentColor" stroke-width="2.7"/>
+<path d="M10.5 12.5l4 4-4 4M16.5 20.5H22" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<!-- Tokio: async runtime lanes (original mark, no official SVG published) -->
+<symbol id="lg-tokio" viewBox="0 0 24 24">
+<rect x="3" y="4" width="18" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M7 9.5h7M7 12.5h10M7 15.5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+<!-- Taffy: flex items in a frame (original mark, no official SVG published) -->
+<symbol id="lg-taffy" viewBox="0 0 24 24">
+<rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+<path d="M8 8v8M12 6.5v11M16 9.5v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+</symbol>
+<!-- Ratatui: official logo-simple.svg (MIT, ratatui-org/ratatui assets/) -->
+<symbol id="lg-ratatui" viewBox="0 0 50 50">
+<g fill="currentColor"><path d="M17 29h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1H5v-1H4v-1H3v-1H2v-1H1v-1H0v-2h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h1v-1h2zm-2 14h1v1h1v1h1v-2h-1v-1h-1v-1h-1zm0-6h-3v1h1v1h4v-4h-1v-1h-1zm35-21h-1v4h-1v1h-1v1h-1v1h-2v1h-1v1h-1v1h-1v1h-2v9h5v1h1v9h-1v1h-1v2h-1v1h-1v-1h-1v-1h-1v-1h1v-1h1v-1h1v-5h-1v1h-3v1h-1v3h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-2h1v-2h1v-1h-2v1h-4v-1h-1v-1h-1v-1h-1v-2h1v-1h1v-1h2v-1h7v-1h1v-1h1v-1h1v-1h1v-1h1v-1h4v-1h3v-1h10zm-17 2h-1v2h1v1h2v-1h1v-2h-1v-1h-2zM29 1h1v9h1v1h1v2h1v2h-1v1h-1v1h-1v1h-1v1h-1v1h-3v-1h-1v-1h-2v-1h-1v-1h-1v-1h-6v-1h-1V9h1V8h1V7h1V6h1V5h1V4h1V3h1V2h1V1h2V0h6z"/></g>
+</symbol>
+<!-- Crossterm: cross-platform I/O arrows (original mark, no official SVG published) -->
+<symbol id="lg-crossterm" viewBox="0 0 24 24">
+<path d="M4 9h9M4 9l2.5-2.5M4 9l2.5 2.5M20 15h-9M20 15l-2.5-2.5M20 15l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<!-- crossbeam-channel: bounded two-way lanes (original mark, no official SVG published) -->
+<symbol id="lg-crossbeam" viewBox="0 0 24 24">
+<path d="M3 8h13M16 8l-2.5-2.5M16 8l-2.5 2.5M21 16H8M8 16l2.5-2.5M8 16l2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+<!-- async-trait: async loop around a core future (original mark, no official SVG published) -->
+<symbol id="lg-asynctrait" viewBox="0 0 24 24">
+<path d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+</symbol>
+</defs>
+</svg>
 <div class="hatch"><div class="rails">
 
 <header class="site corners-b">
@@ -486,11 +533,11 @@ pod log line 2   █</pre></div>
     <div class="panels">
       <div class="frame rv"><div class="panel">
         <h3>What you end up with</h3>
-        <div class="prow"><span class="tile sm-tile mono">VA</span><div class="tx"><b>VeloceApp</b><span>one run() call owns it all</span></div></div>
-        <div class="prow"><span class="tile sm-tile mono">TK</span><div class="tx"><b>Tokio pool</b><span>loaders and cx.spawn tasks</span></div></div>
-        <div class="prow"><span class="tile sm-tile mono">TF</span><div class="tx"><b>Taffy layout</b><span>flexbox snapped to cells</span></div></div>
-        <div class="prow"><span class="tile sm-tile mono">RA</span><div class="tx"><b>Ratatui buffer</b><span>pure render, ≤60 FPS flush</span></div></div>
-        <div class="prow"><span class="tile sm-tile mono">CT</span><div class="tx"><b>Crossterm input</b><span>typed events, bounded channel</span></div></div>
+        <div class="prow"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-veloce"/></svg></span><div class="tx"><b>VeloceApp</b><span>one run() call owns it all</span></div></div>
+        <div class="prow"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-tokio"/></svg></span><div class="tx"><b>Tokio pool</b><span>loaders and cx.spawn tasks</span></div></div>
+        <div class="prow"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-taffy"/></svg></span><div class="tx"><b>Taffy layout</b><span>flexbox snapped to cells</span></div></div>
+        <div class="prow"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-ratatui"/></svg></span><div class="tx"><b>Ratatui buffer</b><span>pure render, ≤60 FPS flush</span></div></div>
+        <div class="prow"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-crossterm"/></svg></span><div class="tx"><b>Crossterm input</b><span>typed events, bounded channel</span></div></div>
       </div></div>
       <div class="frame rv"><div class="panel">
         <h3>How you get there</h3>
@@ -539,7 +586,7 @@ pod log line 2   █</pre></div>
       <h2 class="st title-gradient rv">Built in the open.<br/><em>Proven, not asserted.</em></h2>
     </div>
     <div style="max-width:42rem;margin:56px auto 0;display:flex;gap:20px;align-items:flex-start" class="rv openrow">
-      <span style="flex:none;width:96px;height:96px;border-radius:6px;border:1px solid var(--border);background:var(--surface);display:inline-flex;align-items:center;justify-content:center;font-size:34px;font-weight:700">V</span>
+      <span style="flex:none;width:96px;height:96px;border-radius:6px;border:1px solid var(--border);background:var(--surface);display:inline-flex;align-items:center;justify-content:center"><svg width="52" height="52" aria-hidden="true"><use href="#lg-veloce"/></svg></span>
       <div>
         <p style="margin:0;font-size:15.5px;line-height:1.65;color:var(--fg-muted)">Veloce is built in the open by <a href="https://github.com/RavaniRoshan" style="color:var(--fg);font-weight:500" rel="noopener noreferrer">RavaniRoshan</a> — a Rust terminal-UI framework where every claim ships with a test or a measured probe. No lock-in, no telemetry, no rented runtime.</p>
         <p style="margin:12px 0 0;font-size:13.5px;color:var(--fg-faint)"><a href="https://github.com/RavaniRoshan/veloce" rel="noopener noreferrer">github.com/RavaniRoshan/veloce</a></p>
@@ -556,12 +603,12 @@ pod log line 2   █</pre></div>
       <p class="lede rv">No sponsors, no paywall — just proven crates, tests, and docs.</p>
     </div>
     <div class="wall corners">
-      <div class="slot rv"><span class="tile sm-tile mono">tk</span><span class="nm">tokio</span><span class="vs">1.53.2</span></div>
-      <div class="slot rv"><span class="tile sm-tile mono">tf</span><span class="nm">taffy</span><span class="vs">0.8.3</span></div>
-      <div class="slot rv"><span class="tile sm-tile mono">ra</span><span class="nm">ratatui</span><span class="vs">0.29.0</span></div>
-      <div class="slot rv"><span class="tile sm-tile mono">ct</span><span class="nm">crossterm</span><span class="vs">0.28.1</span></div>
-      <div class="slot rv"><span class="tile sm-tile mono">cb</span><span class="nm">crossbeam-channel</span><span class="vs">0.5.17</span></div>
-      <div class="slot rv"><span class="tile sm-tile mono">at</span><span class="nm">async-trait</span><span class="vs">0.1.92</span></div>
+      <div class="slot rv"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-tokio"/></svg></span><span class="nm">tokio</span><span class="vs">1.53.2</span></div>
+      <div class="slot rv"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-taffy"/></svg></span><span class="nm">taffy</span><span class="vs">0.8.3</span></div>
+      <div class="slot rv"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-ratatui"/></svg></span><span class="nm">ratatui</span><span class="vs">0.29.0</span></div>
+      <div class="slot rv"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-crossterm"/></svg></span><span class="nm">crossterm</span><span class="vs">0.28.1</span></div>
+      <div class="slot rv"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-crossbeam"/></svg></span><span class="nm">crossbeam-channel</span><span class="vs">0.5.17</span></div>
+      <div class="slot rv"><span class="tile sm-tile"><svg aria-hidden="true"><use href="#lg-asynctrait"/></svg></span><span class="nm">async-trait</span><span class="vs">0.1.92</span></div>
       <a class="slot action rv" href="https://github.com/RavaniRoshan/veloce" rel="noopener noreferrer"><span class="tile sm-tile"><svg class="ic sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg></span><span class="nm">Star on GitHub</span><span class="vs">→</span></a>
       <a class="slot action rv" href="http://localhost:3000/"><span class="tile sm-tile"><svg class="ic sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5z"/></svg></span><span class="nm">Read the docs</span><span class="vs">→</span></a>
     </div>
@@ -698,8 +745,8 @@ pod log line 2   █</pre></div>
 <script>
 (function(){
   // marquee content (duplicated for the 48s seamless loop)
-  var items=[["tk","tokio"],["tf","taffy"],["ra","ratatui"],["ct","crossterm"],["cb","crossbeam"],["at","async-trait"]];
-  var html=items.map(function(i){return '<span class="logoitem"><span class="tile">'+i[0]+'</span>'+i[1]+'</span>'}).join("");
+  var items=[["lg-tokio","tokio"],["lg-taffy","taffy"],["lg-ratatui","ratatui"],["lg-crossterm","crossterm"],["lg-crossbeam","crossbeam"],["lg-asynctrait","async-trait"]];
+  var html=items.map(function(i){return '<span class="logoitem"><span class="tile"><svg aria-hidden="true"><use href="#'+i[0]+'"/></svg></span>'+i[1]+'</span>'}).join("");
   document.getElementById("track").innerHTML=html+html;
   // reveal on scroll
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.12});

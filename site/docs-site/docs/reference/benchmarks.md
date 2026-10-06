@@ -1,11 +1,12 @@
 ---
 title: Benchmarks
-description: Measured numbers against the spec budgets.
+description: Measured numbers against the budgets.
 ---
 
 # Benchmarks
 
-Measured on Linux x86_64 with criterion and process probes.
+Measured on Linux x86_64 with criterion and process probes. Reproduce them
+with [Run the benchmarks](/how-to/benchmarks).
 
 | Budget | Measured | Status |
 | --- | --- | --- |

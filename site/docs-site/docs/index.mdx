@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: What Veloce is and when to use it.
+description: Start here. Pick your path through the docs.
 ---
 
 # Introduction
@@ -8,24 +8,27 @@ description: What Veloce is and when to use it.
 Veloce is an application framework for terminal user interfaces in Rust. If
 you have built apps with Next.js or Remix, the mental model transfers
 directly: you declare **routes** that render **views**, views declare their
-**data dependencies**, and the framework owns everything in between — the
-event loop, the layout math, and the terminal itself.
+**data dependencies**, and the framework owns everything in between.
 
-You will like Veloce if you are building dashboards, forms, log viewers,
-deployment monitors, or agent harnesses that live in the terminal — and you
-would rather describe screens than orchestrate threads, channels, and escape
-codes.
+## Choose your path
 
-## How it works
+- **Learn** — [Build your first app](/tutorials/first-app): one guided lesson,
+  install to running dashboard, verifiable at every step.
+- **Solve** — [How-to guides](/how-to/fetch-data): recipes for data loading,
+  background tasks, keys, navigation, forms, logs, and benchmarks.
+- **Look up** — [Reference](/reference/view-context): exact trait methods,
+  builders, and router semantics. No narrative, just contracts.
+- **Understand** — [Explanation](/explanation/architecture): why the framework
+  is shaped the way it is.
+
+## How it works, in thirty seconds
 
 - **Routes** map paths to views. `VeloceApp` holds the stack: push, pop,
   replace. The root route cannot be popped.
-- **Views** are structs that implement five methods: `load`, `fallback`,
-  `update`, `view`, and `handle_key`.
-- **Actions** are your enum. State changes only inside `update`, and
-  background work reports back through a dispatcher — never a lock.
-- **Layout** is flexbox. You nest `Flex`, `Text`, and `Spacer`; taffy
-  computes the geometry and Veloce snaps it to terminal cells.
+- **Views** are structs implementing `load`, `fallback`, `update`, `view`,
+  and `handle_key`.
+- **Actions** are your enum. State changes only inside `update`; background
+  work reports back through a dispatcher — never a lock.
+- **Layout** is flexbox. Nest `Flex`, `Text`, `Spacer`; taffy computes the
+  geometry and Veloce snaps it to terminal cells.
 - **Runtime** restores the terminal on panic, `Ctrl-C`, and normal exit.
-
-Start with the [Quickstart](/quickstart), then read [Views and actions](/views-actions).
