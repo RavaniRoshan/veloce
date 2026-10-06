@@ -294,9 +294,12 @@ Measured numbers (Linux x86_64, this repo):
 - [`docs/PROGRESS.md`](./docs/PROGRESS.md) — milestone log with measured runs.
 - [`docs/DECISIONS.md`](./docs/DECISIONS.md) — every judgment call, recorded.
 - [`docs/PARITY.md`](./docs/PARITY.md) — capabilities deliberately deferred.
-- Marketing + browsable docs site (Vite, inspired by opensend.cc):
+- [`site/DESIGN.md`](./site/DESIGN.md) — the website design language, derived
+  from opensend.cc (tokens, type, layout rhythm, components).
+
+Two local servers, one repo:
 
 ```bash
-cd site && npm ci && npm run dev     # local preview with hot reload
-cd site && npm run build             # static build into site/dist
+cd site && npm ci && npm run dev              # main site → http://localhost:5173
+cd site/docs-site && npm run dev              # Blume docs → http://localhost:3000
 ```

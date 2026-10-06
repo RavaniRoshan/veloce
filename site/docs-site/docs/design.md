@@ -1,3 +1,8 @@
+---
+title: Design
+description: Contract, AST shape, quantization engine, and threading topology.
+---
+
 # Veloce Design Note (Phase 0)
 
 Status: PROPOSAL. Every checklist row is UNVERIFIED until a named test or probe passes.

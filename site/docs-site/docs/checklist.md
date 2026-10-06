@@ -1,3 +1,8 @@
+---
+title: Checklist
+description: Every requirement with its proof.
+---
+
 # Veloce Checklist
 
 Legend: WORKS (named proof + passing run), OWNER-VERIFY (exact manual steps),

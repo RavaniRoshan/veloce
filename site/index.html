@@ -4,156 +4,342 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Veloce — terminal-UI meta-framework for Rust</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="description" content="An opinionated application-layer framework for terminal UIs. Router, declarative views, flexbox layout, crash-resilient runtime." />
 <style>
-  :root {
-    --paper: #f7f5f0;
-    --ink: #141414;
-    --muted: #6b6b66;
-    --line: #e5e0d5;
-    --accent: #ff5b1f;
-    --darkcard: #17171a;
+  :root{
+    --paper:#f6f4ee; --paper-2:#efece3; --ink:#17130c; --muted:#6f6a5e;
+    --line:#e2ddd0; --accent:#ff4d00; --card:#fffdf8;
+    --dark:#16130e; --dark-2:#221d15; --code-green:#8bd67a; --code-orange:#ff8a4c;
+    --radius:16px;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: inherit; text-decoration: none; }
-  a:hover .u-or-link, a.u-or-link:hover { color: var(--accent); }
-  .serif-i { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-  nav {
-    display: flex; align-items: center; gap: 18px; padding: 20px 0;
-    border-bottom: 1px solid var(--line); font-size: 14px;
-  }
-  nav .brand { font-weight: 600; letter-spacing: 0.2px; margin-right: auto; }
-  nav .brand b { color: var(--accent); }
-  .gh { border: 1px solid var(--line); padding: 6px 10px; border-radius: 999px; }
-  header.hero { padding: 72px 0 46px; border-bottom: 1px solid var(--line); }
-  h1 { font-size: clamp(38px, 6vw, 68px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 18px; font-weight: 600; }
-  .sub { color: var(--muted); font-size: 18px; max-width: 640px; line-height: 1.5; margin: 0 0 28px; }
-  .cta { display: inline-flex; gap: 12px; flex-wrap: wrap; }
-  .btn {
-    display: inline-block; padding: 11px 18px; border-radius: 12px;
-    border: 1px solid var(--ink); font-size: 14px; font-weight: 500;
-  }
-  .btn.primary { background: var(--ink); color: var(--paper); }
-  .stack { margin-top: 34px; }
-  .stack .lbl { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 13px; background: #fff9; }
-  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
-  h2 { font-size: 30px; margin: 0 0 18px; letter-spacing: -0.01em; }
-  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 26px; }
-  .card { border: 1px solid var(--line); border-radius: 16px; padding: 22px; background: #fff7; }
-  .card h3 { margin: 0 0 8px; font-size: 17px; }
-  .card p { color: var(--muted); margin: 0; font-size: 14px; line-height: 1.55; }
-  .code {
-    background: var(--darkcard); color: #e8e8e8; border-radius: 16px; padding: 20px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; line-height: 1.55;
-    overflow-x: auto; margin-top: 22px;
-  }
-  .code .k { color: #ff8a4c; } .code .s { color: #8bd67a; } .code .c { color: #6a6a72; }
-  ol.steps { list-style: none; padding: 0; counter-reset: step; margin: 24px 0 0; }
-  ol.steps li { counter-increment: step; border-top: 1px solid var(--line); padding: 16px 0; display: flex; gap: 18px; align-items: baseline; }
-  ol.steps li::before { content: "0" counter(step); color: var(--accent); font-family: ui-monospace, monospace; }
-  footer { padding: 26px 0 60px; color: var(--muted); font-size: 13px; }
-  /* docs page */
-  .layout { display: grid; grid-template-columns: 240px 1fr; gap: 36px; padding: 34px 0; }
-  .side a { display: block; padding: 5px 0; color: var(--muted); font-size: 14px; }
-  .side a:hover { color: var(--accent); }
-  article { max-width: 720px; line-height: 1.65; font-size: 15px; }
-  article h1 { font-size: 30px; } article h2 { font-size: 22px; margin-top: 30px; }
-  article pre { background: var(--darkcard); color: #eee; padding: 16px; border-radius: 12px; overflow-x: auto; }
-  article code { background: #eee6d8; padding: 1px 5px; border-radius: 6px; font-size: 13px; }
-  article pre code { background: transparent; padding: 0; }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .serif-i{font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:400}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* nav */
+  .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;gap:22px;padding:16px 0;font-size:14px}
+  nav .brand{font-weight:700;font-size:17px;letter-spacing:-.01em;margin-right:auto}
+  nav .brand b{color:var(--accent)}
+  nav a.nl{color:var(--muted)}
+  nav a.nl:hover{color:var(--accent)}
+  .pill{border:1px solid var(--line);background:var(--card);border-radius:999px;
+    padding:6px 12px;font-size:13px;white-space:nowrap}
+  .pill .dot{display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:#22a35a;margin-right:7px;vertical-align:1px}
+  .btn{display:inline-block;padding:11px 18px;border-radius:12px;border:1px solid var(--ink);
+    font-size:14px;font-weight:600}
+  .btn.solid{background:var(--ink);color:var(--paper)}
+  .btn.solid:hover{background:var(--accent);border-color:var(--accent)}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* hero */
+  header.hero{padding:84px 0 40px;text-align:left}
+  h1{font-size:clamp(40px,6.4vw,72px);line-height:1.0;letter-spacing:-.025em;
+    margin:0 0 20px;font-weight:650;max-width:16ch}
+  h1 .serif-i{letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:19px;line-height:1.55;max-width:620px;margin:0 0 30px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .built{margin:44px 0 8px;color:var(--muted);font-size:14px}
+  .built b{color:var(--ink)}
+
+  /* terminal hero shot */
+  .term{margin:26px 0 8px;border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;background:var(--dark);box-shadow:0 30px 60px -30px rgba(23,19,12,.35)}
+  .term-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;
+    background:var(--dark-2);border-bottom:1px solid #2c261b}
+  .term-bar i{width:11px;height:11px;border-radius:50%;display:block}
+  .term-bar span{margin-left:8px;color:#8a8172;font-size:12px;font-family:ui-monospace,Menlo,monospace}
+  .term-body{padding:18px 20px;color:#e8e2d4;font-size:13.5px;line-height:1.5;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre;overflow-x:auto}
+  .term-body .b{color:#fff;font-weight:700}
+  .term-body .g{color:var(--code-green)} .term-body .y{color:var(--code-orange)}
+  .term-body .dim{color:#6f675a}
+
+  /* stack marquee */
+  .marquee{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:14px 0;margin-top:34px;background:var(--paper)}
+  .marquee .track{display:flex;gap:12px;width:max-content;animation:slide 26s linear infinite}
+  @keyframes slide{to{transform:translateX(-50%)}}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+    padding:7px 16px;font-size:13.5px;white-space:nowrap}
+  .chip small{color:var(--muted)}
+
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  .kicker{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;margin:0 0 12px}
+  h2{font-size:clamp(28px,3.6vw,40px);letter-spacing:-.02em;margin:0 0 14px;
+    font-weight:650;line-height:1.08;max-width:22ch}
+  .lede{color:var(--muted);font-size:17px;line-height:1.6;max-width:640px;margin:0}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:30px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;display:flex;flex-direction:column;gap:10px}
+  .card h3{margin:0;font-size:17px}
+  .card h3 span{color:var(--muted);font-weight:400;font-size:13px;display:block;margin-top:2px}
+  .card p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.6}
+  .code{background:var(--dark);color:#e8e2d4;border-radius:12px;padding:16px 18px;
+    font-family:ui-monospace,Menlo,monospace;font-size:12.8px;line-height:1.6;overflow-x:auto;margin:6px 0 0}
+  .code .k{color:var(--code-orange)} .code .s{color:var(--code-green)} .code .c{color:#6f675a}
+
+  /* numbered rows */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px}
+  @media(max-width:820px){.split{grid-template-columns:1fr}}
+  .numlist{list-style:none;margin:0;padding:0}
+  .numlist li{border-top:1px solid var(--line);padding:18px 0;display:flex;gap:18px}
+  .numlist li:last-child{border-bottom:1px solid var(--line)}
+  .numlist .n{color:var(--accent);font-family:ui-monospace,monospace;font-size:14px;min-width:28px;padding-top:2px}
+  .numlist b{display:block;margin-bottom:4px}
+  .numlist p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.6}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;align-self:start}
+  .panel h3{margin:0 0 6px} .panel p{color:var(--muted);font-size:14.5px}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:30px}
+  .stat{background:var(--dark);color:#ece5d3;border-radius:var(--radius);padding:26px 24px}
+  .stat .v{font-size:34px;font-weight:700;letter-spacing:-.02em}
+  .stat .v em{font-style:normal;color:var(--code-green)}
+  .stat .l{color:#a89d87;font-size:13.5px;margin-top:6px;line-height:1.5}
+  .honest{background:var(--card);border:1px dashed var(--accent);border-radius:var(--radius);
+    padding:22px 24px;margin-top:18px;font-size:14.5px;line-height:1.6}
+  .honest b{color:var(--accent)}
+
+  /* faq */
+  details{border-top:1px solid var(--line);padding:18px 4px}
+  details:last-of-type{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;font-weight:600;font-size:16.5px;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--accent);font-weight:400;font-size:20px}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--muted);line-height:1.65;font-size:15px;max-width:680px}
+  details code{background:#e9e3d3;padding:1px 6px;border-radius:6px;font-size:13px}
+
+  /* final cta + footer */
+  .final{text-align:left;padding:88px 0}
+  .final h2{font-size:clamp(34px,5vw,56px)}
+  footer{padding:34px 0 60px;color:var(--muted);font-size:13.5px}
+  .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px}
+  @media(max-width:700px){.fgrid{grid-template-columns:1fr 1fr}}
+  footer h4{margin:0 0 10px;color:var(--ink);font-size:13px}
+  footer a{display:block;padding:3px 0}
+  footer a:hover{color:var(--accent)}
+  .copy{margin-top:26px;border-top:1px solid var(--line);padding-top:18px;
+    display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="topbar"><div class="wrap">
   <nav>
     <a class="brand" href="/">Veloce<b>.</b></a>
-    <a href="/docs.html">Docs</a>
-    <a href="/docs.html?page=CHECKLIST">Checklist</a>
-    <a href="/#features">Features</a>
-    <a href="https://github.com/RavaniRoshan/veloce" class="gh">GitHub</a>
+    <a class="nl" href="#inside">Features</a>
+    <a class="nl" href="http://localhost:3000/">Docs</a>
+    <a class="nl" href="#benchmarks">Benchmarks</a>
+    <a class="nl" href="#faq">FAQ</a>
+    <span class="pill"><span class="dot"></span>v0.1.0 · 49 tests green</span>
+    <a class="btn solid" style="padding:8px 14px" href="https://github.com/RavaniRoshan/veloce">GitHub</a>
   </nav>
+</div></div>
 
+<div class="wrap">
   <header class="hero">
     <h1>Terminal apps that ship <span class="serif-i">like the web.</span></h1>
-    <p class="sub">An opinionated application-layer meta-framework for Rust. Router, view lifecycles, flexbox layout, and a frame-budgeted flush — no event-loop plumbing, no borrow-checker fights.</p>
+    <p class="sub">An open-source application framework for Rust terminal UIs.
+      You declare routes and views — Veloce owns the event loop, the flexbox
+      math, and the terminal itself. Nothing to rent, nothing to babysit.</p>
     <div class="cta">
-      <a class="btn primary" href="/docs.html">Read the docs</a>
-      <a class="btn" href="https://github.com/RavaniRoshan/veloce">Star on GitHub</a>
+      <a class="btn solid" href="http://localhost:3000/">Read the docs</a>
+      <a class="btn ghost" href="https://github.com/RavaniRoshan/veloce">Star on GitHub</a>
     </div>
-    <div class="stack">
-      <div class="lbl">Built on</div>
-      <div class="chips">
-        <span class="chip">tokio</span><span class="chip">taffy flexbox</span><span class="chip">ratatui</span><span class="chip">crossterm</span><span class="chip">crossbeam-channel</span><span class="chip">async-trait</span>
+    <div class="term" aria-label="Veloce deployment dashboard running in a terminal">
+      <div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span>reference_app — 80×24</span></div>
+      <div class="term-body"><span class="dim">╭──────────────────────────────────────────────────────────╮
+│                                                          │</span>
+│ <span class="b">Service: auth-service-v2</span>                  <span class="g">Status: Live</span> <span class="dim">│
+│                                                          │
+│                                                          │
+│                                                          │
+╰──────────────────────────────────────────────────────────╯</span>
+pod log line 0
+pod log line 1
+pod log line 2
+pod log line 3 <span class="y">▊</span></div>
+    </div>
+    <p class="built">Built on <b>proven crates.</b> Nothing rented, nothing hidden.</p>
+  </header>
+</div>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<div class="wrap">
+  <section id="inside">
+    <p class="kicker">Inside</p>
+    <h2>Route like Remix. <span class="serif-i">Own the terminal.</span></h2>
+    <p class="lede">A stack router, a view lifecycle, and a layout engine on your
+      machine. One framework, three primitives that compose.</p>
+    <div class="grid3">
+      <div class="card">
+        <h3>Route <span>Router · Shells · Modals</span></h3>
+        <p>Push, pop, and replace over a route table. Persistent chrome survives
+          navigation; modals render over the previous route with a backdrop and
+          locked focus.</p>
+        <div class="code"><span class="c">// routes are just constructors</span>
+router.route(<span class="s">"/"</span>, Dashboard::default());
+router.route(<span class="s">"/settings"</span>, SettingsForm::default());
+<span class="c">// from any view:</span>
+cx.navigate(<span class="s">"/settings"</span>); cx.back();</div>
+      </div>
+      <div class="card">
+        <h3>Render <span>taffy · cells · 60 FPS</span></h3>
+        <p>Declare flex containers; taffy computes continuous layout and the
+          quantization engine snaps it to cells — no overlaps, no drift, no
+          zero-width collapses.</p>
+        <div class="code"><span class="k">pub fn</span> <span class="k">quantize_rect</span>(layout: &amp;Layout,
+  parent: Rect) -&gt; Rect</div>
+      </div>
+      <div class="card">
+        <h3>Restore <span>Guard · Panics · Signals</span></h3>
+        <p>Every panic, <span class="mono">SIGINT</span>, and <span class="mono">SIGTERM</span>
+          restores raw mode, the alt screen, and mouse capture before exit.
+          Logs go to a file, never the live screen.</p>
+        <div class="code"><span class="c">// installed once, before user code runs</span>
+install_panic_hook();
+install_signal_handlers(&amp;handle);</div>
       </div>
     </div>
-  </header>
+  </section>
 
-  <section id="features">
-    <h2>Send like Remix. <span class="serif-i">Own the terminal.</span></h2>
-    <div class="grid3">
-      <div class="card"><h3>Router & shells</h3><p>Stack routing with persistent chrome, modal overlays with backdrops, and focus lock — the same mental model you bring from Next.js/Remix.</p></div>
-      <div class="card"><h3>True flexbox</h3><p>taffy computes continuous layout; Veloce quantizes into discrete terminal cells with error diffusion, parent clamps, and no zero-width collapses.</p></div>
-      <div class="card"><h3>Managed async hydration</h3><p>Views declare <code>load()</code>; the framework runs it on Tokio, shows your fallback, and cancels dangling tasks on navigation.</p></div>
-      <div class="card"><h3>Crash-resilient runtime</h3><p>Every panic, SIGINT, and SIGTERM restores the terminal. Logs go to a file, never the live screen.</p></div>
-      <div class="card"><h3>One event loop</h3><p>Block-free ingestion thread, tokio pool, and a synchronous main thread with priority drain: input &gt; actions &gt; ticks.</p></div>
-      <div class="card"><h3>60 FPS budget</h3><p>Dirty-state redraws, a frame-budgeted flush, and benchmarked cold boot ~3.5 ms / idle RSS ~4 MiB.</p></div>
+  <section>
+    <p class="kicker">Architecture</p>
+    <h2>Your app. Your runtime. <span class="serif-i">Your frame budget.</span></h2>
+    <p class="lede">Three isolated tiers. Heavy async work or a resize never
+      causes a frame drop or input lag.</p>
+    <div class="split">
+      <ol class="numlist">
+        <li><span class="n">01</span><div><b>Ingestion thread</b><p>A dedicated OS thread polls input and forwards typed events over a bounded channel.</p></div></li>
+        <li><span class="n">02</span><div><b>Tokio pool</b><p>Loaders, network, filesystem, and <span class="mono">cx.spawn</span> tasks. Results return only as typed actions.</p></div></li>
+        <li><span class="n">03</span><div><b>UI thread</b><p>Synchronous drain — input, then actions, then ticks — then a pure render and a ≤60 FPS flush.</p></div></li>
+        <li><span class="n">04</span><div><b>Terminal guard</b><p>RAII raw mode, alt screen, and mouse capture, with panic and signal hooks that always restore.</p></div></li>
+      </ol>
+      <div class="panel">
+        <h3>What you end up with</h3>
+        <p><span class="mono">VeloceApp</span> wires the tiers together. Views stay pure state machines: <span class="mono">update(action, cx)</span>, no locks, no lifetimes in user code.</p>
+        <div class="code">VeloceApp::new()
+  .route(<span class="s">"/"</span>, Dashboard::default())
+  .run().await</div>
+        <p style="margin-top:14px"><a href="http://localhost:3000/design" style="color:var(--accent);font-weight:600">Read the 70-line design note →</a></p>
+      </div>
     </div>
   </section>
 
   <section>
-    <h2>The reference API. <span class="serif-i">That&rsquo;s the whole app.</span></h2>
-    <div class="code">#[async_trait::async_trait]
-impl <span class="k">View</span> for <span class="k">DeploymentDashboard</span> {
-    type Action = Action;
-
-    async fn load(&amp;mut self) -&gt; Result&lt;()&gt; { ... }
-
-    fn update(&amp;mut self, action: Action, cx: &amp;mut Context&lt;Action&gt;) {
-        match action {
-            Action::LogReceived(line) =&gt; self.logs.push(line),
-            ...
-        }
-    }
-
-    fn view(&amp;self) -&gt; Element {
-        Flex::column().gap(1)
-            .child(Text::new("Service: auth-service-v2").bold())
-            .child(ScrollView::new().flex_grow(1.0)
-                .children(self.logs.iter().map(|l| Text::new(l))))
-            .into_element()
-    }
-}
-
-#[tokio::main]
-async fn <span class="k">main</span>() -&gt; Result&lt;()&gt; {
-    VeloceApp::new().route(<span class="s">"/"</span>, DeploymentDashboard::default()).run().await
-}</div>
+    <p class="kicker">Get started</p>
+    <h2><span class="serif-i">Three steps</span> from install to first frame.</h2>
+    <div class="split">
+      <ol class="numlist">
+        <li><span class="n">01</span><div><b>Step 1: Depend</b><p>Add <span class="mono">veloce = "0.1"</span> to <span class="mono">Cargo.toml</span>. Stable Rust, no nightly features.</p></div></li>
+        <li><span class="n">02</span><div><b>Step 2: Declare</b><p>Implement <span class="mono">View</span> for one struct — <span class="mono">load</span>, <span class="mono">update</span>, <span class="mono">view</span> — with flexbox children.</p></div></li>
+        <li><span class="n">03</span><div><b>Step 3: Run</b><p><span class="mono">VeloceApp::new().route("/", view).run().await</span>. Press <span class="mono">q</span> to quit; the terminal is restored.</p></div></li>
+      </ol>
+      <div class="panel">
+        <h3>Try the examples</h3>
+        <p>Reference dashboard, settings form + log viewer, and an agent harness — each runnable with one cargo command.</p>
+        <div class="code">cargo run -p veloce \<br>&nbsp;&nbsp;--example reference_app</div>
+      </div>
+    </div>
   </section>
 
   <section>
-    <h2>Three steps, <span class="serif-i">install to first frame.</span></h2>
-    <ol class="steps">
-      <li>Add veloce = "0.1" to Cargo.toml.</li>
-      <li>Implement View for one struct with flexbox children.</li>
-      <li>Run it: VeloceApp::new().route("/", view).run().await</li>
-    </ol>
+    <p class="kicker">Engineering</p>
+    <h2>Built in the open. <span class="serif-i">Proven, not asserted.</span></h2>
+    <p class="lede">A row is WORKS only when an automated test that drives the
+      real code passes — including real PTYs for panic and signal safety.
+      Reading code is never proof.</p>
+    <div class="grid3">
+      <div class="card"><h3>Panic safety</h3><p>Panics inside <span class="mono">view()</span> and <span class="mono">update()</span> restore the terminal on a real PTY, every run.</p></div>
+      <div class="card"><h3>Layout invariants</h3><p>No overlaps, no zero-width collapse, no drift at depth 12, fuzzed 1×1…500×200.</p></div>
+      <div class="card"><h3>Concurrency</h3><p>10,000 interleaved events with zero deadlocks; key echo unaffected at 1,000 actions/sec.</p></div>
+      <div class="card"><h3>Hydration</h3><p>Fallback on the first frame, no flicker after load, mid-load navigation cancels the task.</p></div>
+      <div class="card"><h3>Routing</h3><p>Root cannot be popped; chrome persists across replace; modals lock focus with backdrop.</p></div>
+      <div class="card"><h3>Primitives</h3><p>Settings form and log viewer built purely from <span class="mono">Text</span>, <span class="mono">TextInput</span>, <span class="mono">ScrollView</span>, <span class="mono">Modal</span>.</p></div>
+    </div>
+  </section>
+
+  <section id="benchmarks">
+    <p class="kicker">Benchmarks</p>
+    <h2>Measured, <span class="serif-i">not asserted.</span></h2>
+    <p class="lede">Linux x86_64, criterion + process probes. Budgets from the spec, numbers from the machine.</p>
+    <div class="stats">
+      <div class="stat"><div class="v">3.55<em>ms</em></div><div class="l">Cold boot to first frame. Budget: 15 ms.</div></div>
+      <div class="stat"><div class="v">4<em>MiB</em></div><div class="l">Idle RSS after boot. Budget: 12 MiB.</div></div>
+      <div class="stat"><div class="v">10<em>µs</em></div><div class="l">Key-echo p95 under 1,000 actions/sec.</div></div>
+      <div class="stat"><div class="v">49<em>✓</em></div><div class="l">Tests green: unit, snapshot, fuzz, PTY e2e.</div></div>
+    </div>
+    <div class="honest"><b>Honest caveat:</b> per-frame cost is not flat — relayout is O(children)
+      (197 µs @10 → 1.44 ms @2000), because trees rebuild each frame. A memoized
+      layout cache is the planned fix, listed in the parity doc.</div>
+  </section>
+
+  <section id="faq">
+    <p class="kicker">FAQ</p>
+    <h2>Questions people ask <span class="serif-i">before writing an event loop.</span></h2>
+    <div style="margin-top:26px">
+      <details><summary>Do I write my own event loop?</summary><p>No. <span class="mono">VeloceApp::run</span> owns the ingestion thread, the Tokio runtime, the priority drain, and the 60 FPS flush. You implement <span class="mono">View</span> and declare routes.</p></details>
+      <details><summary>How do background tasks update the UI?</summary><p>Through <span class="mono">cx.dispatcher()</span> — a cloneable typed sink. Move it into any future; dispatched actions land in <span class="mono">update()</span> on the UI thread. No locks, no channels in user code.</p></details>
+      <details><summary>How does flexbox work on a cell grid?</summary><p>taffy computes continuous layout; <span class="mono">quantize_rect</span> rounds absolute edges once, clamps every child inside its parent, and forces a 1-cell minimum when taffy assigned a positive size. Text participates via a measure function, so wrapping is layout-aware.</p></details>
+      <details><summary>What happens when my view panics?</summary><p>A panic hook restores raw mode, leaves the alt screen, and disables mouse capture <em>before</em> the default hook prints the backtrace. Proven on a real PTY for panics inside both <span class="mono">view()</span> and <span class="mono">update()</span>.</p></details>
+      <details><summary>Does it work on macOS and Windows?</summary><p>Linux x86_64 is verified here (build + PTY e2e). macOS and Windows (WSL/Windows Terminal) are owner-verify — the code paths are portable crossterm/ratatui, but we have no cross toolchain in this environment.</p></details>
+      <details><summary>Is it on crates.io?</summary><p>Not yet — publishing needs the owner's token and is tracked as an owner-verify step. File manifests are package-validated; releases will go leaf-crate first.</p></details>
+      <details><summary>What is intentionally out of scope?</summary><p>Hot-reload/dev-server, mouse-wheel scrolling, non-terminal backends, and a memoized layout cache. The full deferred list lives in the parity doc.</p></details>
+      <details><summary>Where are the docs?</summary><p>On the Blume docs site — design note, checklist with proofs, progress log, decisions, and parity — all rendered from the repo's own markdown.</p></details>
+    </div>
+  </section>
+
+  <section class="final">
+    <p class="kicker">Get started</p>
+    <h2>Stop plumbing <span class="serif-i">your event loop.</span></h2>
+    <p class="lede">Declare one view, run it, press <span class="mono">q</span> to quit.</p>
+    <div class="cta" style="margin-top:24px">
+      <a class="btn solid" href="http://localhost:3000/">Read the docs</a>
+      <a class="btn ghost" href="https://github.com/RavaniRoshan/veloce">Star on GitHub</a>
+    </div>
   </section>
 
   <footer>
-    Veloce · open source terminal-UI meta-framework · © 2026
+    <div class="fgrid">
+      <div>
+        <div style="font-weight:700;color:var(--ink);font-size:15px;margin-bottom:6px">Veloce.</div>
+        <div style="max-width:300px;line-height:1.6">The terminal-UI meta-framework for Rust. Open source, free forever.</div>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="#inside">Features</a>
+        <a href="http://localhost:3000/">Docs</a>
+        <a href="#benchmarks">Benchmarks</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div>
+        <h4>Open source</h4>
+        <a href="https://github.com/RavaniRoshan/veloce">GitHub</a>
+        <a href="http://localhost:3000/progress">Progress</a>
+        <a href="http://localhost:3000/parity">Parity</a>
+      </div>
+    </div>
+    <div class="copy"><span>© 2026 Veloce.</span><span class="mono">v0.1.0</span></div>
   </footer>
 </div>
 
+<script>
+  const items = ["tokio","taffy flexbox","ratatui","crossterm","crossbeam-channel","async-trait"];
+  const html = items.map(i=>`<span class="chip">${i}</span>`).join("");
+  document.getElementById("track").innerHTML = html + html;
+</script>
 <script type="module" src="/main.js"></script>
 </body>
 </html>

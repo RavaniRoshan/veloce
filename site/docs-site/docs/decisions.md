@@ -1,3 +1,8 @@
+---
+title: Decisions
+description: Every judgment call, recorded.
+---
+
 # Decisions
 
 - Contract resolved per kickoff: single `update(&mut self, action, cx: &mut Context<A>)`;

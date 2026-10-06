@@ -1,3 +1,8 @@
+---
+title: Parity
+description: Capabilities deliberately deferred.
+---
+
 # Veloce PARITY — capabilities deliberately deferred
 
 The Rust TUI ecosystem baseline (ratatui + crossterm) provides canvas-drawing

@@ -1,3 +1,8 @@
+---
+title: Progress
+description: Milestone log with measured runs.
+---
+
 # Progress
 
 ## 2026-10-05 M0
