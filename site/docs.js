@@ -1,6 +1,6 @@
 import { marked } from 'marked';
 
-const pages = ['DESIGN', 'CHECKLIST', 'PROGRESS', 'DECISIONS', 'PARITY', 'PRD'];
+const pages = ['DESIGN', 'CHECKLIST', 'PROGRESS', 'DECISIONS', 'PARITY'];
 const side = document.getElementById('side');
 side.innerHTML = pages
   .map((p) => `<a href="/docs.html?page=${p}">${p}</a>`)

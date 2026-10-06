@@ -9,7 +9,9 @@ not, by this contract version (0.1.0), include:
 - Direct IDE integration / LSP client.
 - Mouse-aware scrolling in ScrollView: mouse events decoded but no scroll wheel wiring.
 - True subtree offset translation for ScrollView of non-Text children (complex containers render first-frame placeholder).
-- List virtualization memory optimization (render cost is linear with children).
+- List virtualization memory optimization (relayout cost is linear with children; no memoized layout cache yet — this is why G2 "per-frame cost flat" is PARTIAL).
+- Element-tree memoization / dirty-subtree relayout (frame currently rebuilds Element + taffy trees).
+- Hot-reload/dev-server (M7 candidate).
 - Theme system centralization beyond per-element colors.
 - Non-terminal backends (Web, Wasm): out of scope by design.
 - Keybinding system / global focus manager modal recording beyond handle_key priority.
