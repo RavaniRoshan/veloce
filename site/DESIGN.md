@@ -67,14 +67,26 @@ only in gutters wider than the rails.
 11. Final CTA with grayscale glow. Footer with status panel (real gate
     results) + Product / Open source / Docs columns.
 
-## Motion
+## Motion (GSAP core, CDN `gsap@3.12.5`, no plugins)
 
-- Reveal: opacity 0 → 1, translateY(16px) → 0, ~0.55s ease-out, 70ms stagger,
-  once per element; disabled under `prefers-reduced-motion`.
-- Buttons: `scale(.97)` press over 0.16s.
-- Marquee: 48s linear infinite, duplicated track, pause on hover, 64px edge
-  masks, static row under reduced motion.
-- FAQ: ~0.2s expand; keyboard accessible, `aria-expanded` via `details`.
+- Project defaults: `gsap.defaults({ duration: 0.55, ease: "power2.out" })`.
+- Hero entrance: `gsap.from(".hero-inner > *", { autoAlpha: 0, y: 24,
+  stagger: 0.09, ease: "power3.out" })` on load.
+- Scroll reveals: IntersectionObserver triggers `gsap.fromTo` (autoAlpha 0→1,
+  y 16→0, ~0.55s, 70ms index stagger, `overwrite: "auto"`), once per element.
+- Benchmark counters: `gsap.to` object tween with `snap`-style `toFixed`
+  formatting in `onUpdate`, fired once by observer at 0.4 threshold.
+- FAQ: custom open/close tweening explicit `height` 0↔`auto` + autoAlpha over
+  0.2s; `clearProps` on close; one open at a time.
+- Theme icon swap: `fromTo` rotation −90→0 on toggle.
+- Marquee stays CSS (48s linear infinite); buttons stay CSS `:active`
+  `scale(.97)`. CSS is preferred where GSAP adds no control.
+- Accessibility: everything gated by `gsap.matchMedia()` reduced-motion
+  handling — when reduced, tweens are skipped and content renders statically.
+  `.rv` elements are visible by default; GSAP applies from-states at runtime,
+  so a failed CDN load degrades to a static page, never invisible content.
+- Core-only rules followed: camelCase vars, transform aliases (`y`,
+  `rotation`), `autoAlpha` over `opacity`, no layout-property animation.
 
 ## Logos
 
