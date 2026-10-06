@@ -51,3 +51,9 @@ Milestones 0-2 complete. All P0 rows in A, B, C are WORKS or OWNER-VERIFY; zero 
 - Final gates: cargo fmt --check clean; cargo clippy --all-targets -- -D warnings clean; cargo test --workspace 48 tests green; no #[ignore] anywhere in crates/.
 - Measured this run: cold boot 6.29 ms (harness) / 3.55 ms (criterion), idle RSS 4 MiB, key latency p95 10 us.
 - G4/G5 remain OWNER-VERIFY (no macOS/Windows toolchain; no crates.io token).
+
+## 2026-10-05 Ship: GitHub + site
+- Repo: https://github.com/RavaniRoshan/veloce (public, branch master @ 21e00ce; force-pushed once to purge accidentally committed target/ + rebuild artifacts from history; .git 296K; `git status` clean; remote HEAD == local HEAD 21e00ce verified via ls-remote).
+- Caught and fixed before ship: first push contained target/debug binaries committed before .gitignore existed (16,828 tracked build files). History rewritten with git filter-branch to drop target/site node_modules, gc'd aggressively, force-pushed.
+- Final gates on the shipped commit: cargo fmt --check clean; cargo clippy --all-targets -- -D warnings clean; cargo test --workspace: 49 passed, 0 failed.
+- Site: site/ builds (`npm run build` OK, 8 modules) and serves: index + docs.html + /docs/*.md all verified over vite preview (HTTP 200).
