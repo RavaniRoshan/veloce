@@ -1,1 +1,14 @@
-(empty)
+# Rust / Cargo build artifacts
+/target
+**/*.rs.bk
+
+# Editor / OS noise
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Site
+site/node_modules/
+site/dist/
+site/docs-site/dist/
