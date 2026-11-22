@@ -14,7 +14,7 @@ You need a stable Rust toolchain. Add this to `Cargo.toml`:
 
 ```toml
 [dependencies]
-veloce = "0.1"
+veloce-tui = "0.1"
 tokio = { version = "1", features = ["full"] }
 anyhow = "1"
 async-trait = "0.1"
@@ -28,7 +28,7 @@ A view is a struct plus an `Action` enum plus five methods. Create
 `src/main.rs`:
 
 ```rust
-use veloce::prelude::*;
+use veloce_tui::prelude::*;
 
 #[derive(Default, Clone)]
 struct Dashboard {

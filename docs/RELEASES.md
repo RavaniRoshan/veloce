@@ -29,7 +29,7 @@ crates.io token is required, so publishing is a manual step.
 
 - [ ] Tag the release in git
 - [ ] Update the docs site if a public API changed
-- [ ] Confirm `veloce = "0.1"` resolves from a clean Cargo project
+- [ ] Confirm `veloce-tui = "0.1"` resolves from a clean Cargo project
 
 Until the crates.io release happens, the manifests are package-validated but
 the published crate path is intentionally absent. The FAQ says this plainly.

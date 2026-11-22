@@ -3,7 +3,7 @@
 
 use anyhow::Result;
 
-use veloce::prelude::*;
+use veloce_tui::prelude::*;
 
 #[derive(Default, Debug, Clone)]
 pub struct DeploymentDashboard {

@@ -1,5 +1,5 @@
-use veloce::prelude::*;
-use veloce::{flex_column, flex_row};
+use veloce_tui::prelude::*;
+use veloce_tui::{flex_column, flex_row};
 
 #[test]
 fn macros_equal_builder_api() {

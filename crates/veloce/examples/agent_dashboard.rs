@@ -1,7 +1,7 @@
 //! G3 showcase: an AI coding-agent harness dashboard streaming mock tool
 //! executions — built end-to-end on Veloce primitives.
 use anyhow::Result;
-use veloce::prelude::*;
+use veloce_tui::prelude::*;
 
 #[derive(Default, Clone)]
 struct AgentDash {

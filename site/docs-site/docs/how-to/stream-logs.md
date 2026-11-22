@@ -29,5 +29,5 @@ ScrollView::new()
 runnable `agent_dashboard` example streams mock tool output this way:
 
 ```bash
-cargo run -p veloce --example agent_dashboard
+cargo run -p veloce-tui --example agent_dashboard
 ```

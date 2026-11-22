@@ -1,7 +1,7 @@
 //! End-to-end: settings form (TextInputs) + streaming log viewer (ScrollView)
 //! built only from framework primitives.
 use anyhow::Result;
-use veloce::prelude::*;
+use veloce_tui::prelude::*;
 
 #[derive(Default, Clone)]
 struct Dashboard {

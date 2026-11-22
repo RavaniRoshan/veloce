@@ -1,7 +1,7 @@
 //! A2 proof app: panics INSIDE view() on frame 2, and inside update() when
 //! the key 'u' is pressed. The framework must restore the terminal in both.
 use anyhow::Result;
-use veloce::prelude::*;
+use veloce_tui::prelude::*;
 
 #[derive(Default, Clone)]
 struct Fragile {

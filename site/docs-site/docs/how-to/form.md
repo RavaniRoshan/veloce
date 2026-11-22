@@ -23,5 +23,5 @@ persist and the cursor highlight follows focus. The runnable `settings_log_viewe
 example demonstrates exactly this form next to a live log view:
 
 ```bash
-cargo run -p veloce --example settings_log_viewer
+cargo run -p veloce-tui --example settings_log_viewer
 ```

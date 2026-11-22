@@ -1,6 +1,6 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
-use veloce::prelude::*;
 use veloce_layout::{resolve_rects, LayoutCache};
+use veloce_tui::prelude::*;
 
 fn frame_tree(n: usize) -> Element {
     Flex::column()

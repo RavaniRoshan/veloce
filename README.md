@@ -60,7 +60,7 @@ Add the facade crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-veloce = "0.1"
+veloce-tui = "0.1"
 tokio = { version = "1", features = ["full"] }
 anyhow = "1"
 async-trait = "0.1"
@@ -69,7 +69,7 @@ async-trait = "0.1"
 Then write a view — one struct, five methods:
 
 ```rust
-use veloce::prelude::*;
+use veloce_tui::prelude::*;
 
 #[derive(Default, Clone)]
 struct Hello;
@@ -203,10 +203,10 @@ the previous route with a dimmed backdrop and locked input focus.
 
 | Example | What it proves | Run it |
 |---|---|---|
-| `reference_app` | The reference API end to end: hydration, `d` deploys, streaming logs, `q` quits and restores the terminal | `cargo run -p veloce --example reference_app` |
-| `settings_log_viewer` | Settings form (`TextInput` fields, `Tab` focus) + streaming log viewer (`ScrollView`) built only from primitives | `cargo run -p veloce --example settings_log_viewer` |
-| `agent_dashboard` | AI coding-agent harness dashboard streaming mock tool executions | `cargo run -p veloce --example agent_dashboard` |
-| `panic_view_app` | Panics raised *inside* `view()` (`v`) and *inside* `update()` (`u`) restore the terminal | `cargo run -p veloce --example panic_view_app` |
+| `reference_app` | The reference API end to end: hydration, `d` deploys, streaming logs, `q` quits and restores the terminal | `cargo run -p veloce-tui --example reference_app` |
+| `settings_log_viewer` | Settings form (`TextInput` fields, `Tab` focus) + streaming log viewer (`ScrollView`) built only from primitives | `cargo run -p veloce-tui --example settings_log_viewer` |
+| `agent_dashboard` | AI coding-agent harness dashboard streaming mock tool executions | `cargo run -p veloce-tui --example agent_dashboard` |
+| `panic_view_app` | Panics raised *inside* `view()` (`v`) and *inside* `update()` (`u`) restore the terminal | `cargo run -p veloce-tui --example panic_view_app` |
 
 > [!WARNING]
 > The examples take over your terminal (raw mode + alternate screen). If you

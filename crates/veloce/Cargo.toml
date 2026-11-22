@@ -1,5 +1,5 @@
 [package]
-name = "veloce"
+name = "veloce-tui"
 version = "0.1.0"
 edition = "2021"
 description = "Veloce terminal-UI framework (veloce)"

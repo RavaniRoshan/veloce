@@ -467,7 +467,7 @@ svg.ic.sm{width:16px;height:16px}
         <span class="tile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 3 3v6.5M15.5 18H9a3 3 0 0 1-3-3v-6.5"/></svg></span>
         <h3>Route</h3><div class="eyebrow">Router · Shells · Modals</div>
         <p>Push, pop, and replace over a route table. Persistent chrome survives navigation; modals render over the previous route with a backdrop and locked focus.</p>
-        <div class="mock"><div class="fade"></div><div class="dots"><i></i><i></i><i></i></div><pre>$ cargo run -p veloce --example reference_app
+        <div class="mock"><div class="fade"></div><div class="dots"><i></i><i></i><i></i></div><pre>$ cargo run -p veloce-tui --example reference_app
 ✓ hydrated in 1 frame
 ✓ deploy streamed → Live
 ✓ terminal restored on quit</pre></div>
@@ -496,7 +496,7 @@ pod log line 2   █</pre></div>
         <div class="dotbg"></div>
         <h4>Set up once, in your crate</h4>
         <div class="chips">
-          <span class="chip mono">veloce = "0.1"</span>
+          <span class="chip mono">veloce-tui = "0.1"</span>
           <span class="chip mono">impl View</span>
           <span class="chip mono">VeloceApp::run</span>
         </div>
@@ -577,7 +577,7 @@ pod log line 2   █</pre></div>
       </div></div>
       <div class="frame rv"><div class="panel">
         <h3>How you get there</h3>
-        <div class="prow"><span class="seq">01</span><div class="tx"><b>Depend</b><span>veloce = "0.1" on stable Rust</span></div></div>
+        <div class="prow"><span class="seq">01</span><div class="tx"><b>Depend</b><span>veloce-tui = "0.1" on stable Rust</span></div></div>
         <div class="prow"><span class="seq">02</span><div class="tx"><b>Declare</b><span>one View: load, update, view</span></div></div>
         <div class="prow"><span class="seq">03</span><div class="tx"><b>Route it</b><span>VeloceApp::new().route("/", view)</span></div></div>
         <div class="prow"><span class="seq">04</span><div class="tx"><b>Run it</b><span>.run().await — q quits cleanly</span></div></div>
@@ -599,7 +599,7 @@ pod log line 2   █</pre></div>
       <div class="cell rel rv"><span class="bignum">01</span>
         <span class="tile sm-tile"><svg class="ic sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3.5 8.5L12 13l8.5-4.5M12 13v9"/></svg></span>
         <h3>Step 1: Depend</h3>
-        <p>Add <span class="mono" style="font-size:12.5px">veloce = "0.1"</span> to Cargo.toml. Stable toolchain, no nightly features.</p>
+        <p>Add <span class="mono" style="font-size:12.5px">veloce-tui = "0.1"</span> to Cargo.toml. Stable toolchain, no nightly features.</p>
       </div>
       <div class="cell rel rv"><span class="bignum">02</span>
         <span class="tile sm-tile"><svg class="ic sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></svg></span>
