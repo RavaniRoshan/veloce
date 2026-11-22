@@ -15,6 +15,8 @@ with [Run the benchmarks](/how-to/benchmarks).
 | Key echo under 1,000 actions/s | p95 10 µs | Pass |
 | 10,000 interleaved events, no deadlock | Pass | Pass |
 
-One honest caveat: per-frame cost is not flat as content grows (about
-197 µs at 10 children rising to 1.44 ms at 2,000), because the element and
-layout trees rebuild each frame. A memoized layout cache is the planned fix.
+Repeated frames reuse the last layout tree while the element tree and terminal
+size are unchanged. That costs 94 µs at 10 children and 160 µs at 2,000. A cold
+frame after a change still pays full layout, 180 µs to 2.25 ms at the same
+sizes. Cache equivalence is covered by regression tests for text, scroll, and
+resize changes.

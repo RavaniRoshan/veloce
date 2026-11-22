@@ -1,6 +1,7 @@
 use anyhow::Result;
 
 use veloce_core::View;
+use veloce_layout::LayoutCache;
 use veloce_router::{LayoutWrapper, Router};
 use veloce_runtime::{spawn_ingestion_thread, tick_interval, AppEvent, TerminalGuard};
 
@@ -55,6 +56,7 @@ impl VeloceApp {
         let mut interval = tick_interval();
         let mut terminal =
             ratatui::Terminal::new(ratatui::backend::CrosstermBackend::new(std::io::stdout()))?;
+        let mut layout_cache = LayoutCache::new();
 
         loop {
             // input events first (highest priority)
@@ -71,8 +73,10 @@ impl VeloceApp {
                 route.view.drain_actions(64);
             }
             self.router.step(&handle);
-            let _ =
-                terminal.draw(|f| veloce_render::render(&self.router.element(), f.buffer_mut()));
+            let element = self.router.element();
+            let _ = terminal.draw(|f| {
+                veloce_render::render_cached(&element, f.buffer_mut(), &mut layout_cache)
+            });
             interval.tick().await;
         }
     }

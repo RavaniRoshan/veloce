@@ -251,7 +251,7 @@ This project follows a simple rule: **a row is WORKS only when an automated
 test that drives the real code passes.** Reading code is never proof.
 
 ```bash
-cargo test --workspace          # 49 tests: unit + insta snapshots + proptest fuzz + real-PTY e2e
+cargo test --workspace          # 56 tests: unit + insta snapshots + proptest fuzz + real-PTY e2e
 cargo fmt --check               # must be clean
 cargo clippy --all-targets -- -D warnings   # zero warnings enforced
 cargo bench -p veloce --bench frame         # criterion baselines
@@ -274,13 +274,14 @@ Measured numbers (Linux x86_64, this repo):
 | Cold boot to first frame < 15 ms | 3.55 ms (criterion) / 6.29 ms (harness) | ✅ |
 | Idle memory < 12 MiB | 4 MiB VmRSS | ✅ |
 | Key echo under 1k actions/s | p95 10 µs, max 13 µs | ✅ |
-| Per-frame cost flat as content grows | 197 µs @10 → 1442 µs @2000 children (linear) | ⚠️ tracked, see below |
+| Per-frame cost with cached layout | 94 µs @10 → 160 µs @2000 children | ✅ |
 
 > [!NOTE]
-> Per-frame cost is *not* flat: relayout is O(children) because the element
-> and taffy trees are rebuilt each frame. A memoized layout cache is the
-> planned fix — listed with the other deferred work on the Parity docs page
-> (hot-reload, mouse-wheel scroll, non-terminal backends, …).
+> Repeated frames reuse the last `LayoutTree` while the element tree and
+> terminal size are unchanged. That skips taffy entirely. A cold frame after a
+> change still pays full layout: 180 µs @10 → 2.25 ms @2000 children. Four
+> regression tests prove cached rects match a fresh layout after text, scroll,
+> and size changes.
 
 ## Docs & site
 

@@ -39,5 +39,4 @@ Not yet. Releases will go leaf-crate first once the owner's token is configured.
 
 ## What is intentionally out of scope?
 
-Hot-reload/dev-server, mouse-wheel scrolling, non-terminal backends, and a
-memoized layout cache.
+Hot-reload/dev-server, mouse-wheel scrolling, and non-terminal backends.

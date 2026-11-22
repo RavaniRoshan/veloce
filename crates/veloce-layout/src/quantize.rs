@@ -56,10 +56,21 @@ pub struct Placed {
 pub fn resolve_rects(root: &veloce_core::Element, cols: u16, rows: u16) -> Vec<Placed> {
     let mut tree = crate::mirror::LayoutTree::build(root);
     tree.compute(cols, rows);
+    walk_rects(root, &tree, cols, rows)
+}
+
+/// Walks an already computed tree. The layout cache calls this on a hit so a
+/// frame with an unchanged element tree skips taffy entirely.
+pub(crate) fn walk_rects(
+    root: &veloce_core::Element,
+    tree: &crate::mirror::LayoutTree,
+    cols: u16,
+    rows: u16,
+) -> Vec<Placed> {
     let mut out = Vec::new();
     walk(
         root,
-        &tree,
+        tree,
         usize::MAX,
         Rect::new(0, 0, cols, rows),
         &mut out,

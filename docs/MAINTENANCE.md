@@ -21,9 +21,10 @@ SIGINT, and SIGTERM.
 cargo bench -p veloce --bench frame
 ```
 
-Record the platform and the numbers. Per-frame cost is currently linear in the
-number of children because trees are rebuilt each frame; a memoized layout
-cache is tracked as deferred work. Do not describe the frame cost as flat.
+Record the platform and the numbers. `frame_cost_cached` measures steady-state
+frames that reuse the layout cache; `frame_cost` measures cold frames. At 2,000
+children they were 160 µs and 2.25 ms respectively on Linux x86_64. Do not
+present the cold number as the steady-state cost.
 
 ## Sites
 
@@ -39,5 +40,5 @@ the font files are present in the built output after a build.
 
 Linux x86_64 is verified directly. macOS and Windows through WSL / Windows
 Terminal use the same portable crossterm and ratatui paths but are not verified
-in this environment. Hot reload, mouse-wheel scrolling, non-terminal backends,
-and the layout cache are intentionally out of scope for now.
+in this environment. Hot reload, mouse-wheel scrolling, and non-terminal
+backends are intentionally out of scope for now.

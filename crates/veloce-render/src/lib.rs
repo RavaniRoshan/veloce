@@ -4,12 +4,24 @@ use ratatui::style::{Color, Modifier, Style};
 use ratatui::widgets::{Block, BorderType};
 
 use veloce_core::{BorderStyle, Element};
-use veloce_layout::{resolve_rects, Placed};
+use veloce_layout::{resolve_rects, LayoutCache, Placed};
 
 pub fn render(element: &Element, buf: &mut Buffer) {
     let rects = resolve_rects(element, buf.area.width, buf.area.height);
+    render_with_rects(element, buf, &rects);
+}
+
+/// Same output as `render`, but reuses the last layout when the element tree
+/// and terminal size are unchanged. Use one cache per terminal for the life of
+/// the app so steady-state frames skip taffy entirely.
+pub fn render_cached(element: &Element, buf: &mut Buffer, cache: &mut LayoutCache) {
+    let rects = cache.resolve(element, buf.area.width, buf.area.height);
+    render_with_rects(element, buf, &rects);
+}
+
+fn render_with_rects(element: &Element, buf: &mut Buffer, rects: &[Placed]) {
     let mut i = 0;
-    render_node(element, buf, &rects, &mut i);
+    render_node(element, buf, rects, &mut i);
 }
 
 fn render_node(element: &Element, buf: &mut Buffer, rects: &[Placed], i: &mut usize) -> Rect {

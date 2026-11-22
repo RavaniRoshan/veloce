@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "Veloce terminal-UI framework (veloce-router)"
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/RavaniRoshan/veloce"
 
 [dependencies]
 tokio = { workspace = true }
@@ -29,6 +30,3 @@ path = "../veloce-layout"
 version = "0.1.0"
 path = "../veloce-render"
 
-[dev-dependencies]
-veloce-layout = { version = "0.1.0", path = "../veloce-layout" }
-veloce-render = { version = "0.1.0", path = "../veloce-render" }

@@ -10,7 +10,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Veloce" />
 <meta property="og:title" content="Veloce — terminal-UI meta-framework for Rust" />
-<meta property="og:description" content="Free, open-source Rust TUI framework: stack router, flexbox layout, async hydration, and a panic-safe runtime. 49 tests green, 3.55 ms cold boot." />
+<meta property="og:description" content="Free, open-source Rust TUI framework: stack router, flexbox layout, async hydration, and a panic-safe runtime. 56 tests green, 3.55 ms cold boot." />
 <meta property="og:url" content="https://veloce-alpha-steel.vercel.app/" />
 <meta property="og:image" content="https://veloce-alpha-steel.vercel.app/og-image.png" />
 <meta property="og:image:width" content="1024" />
@@ -436,7 +436,7 @@ svg.ic.sm{width:16px;height:16px}
 <!-- HERO -->
 <section class="section hero corners corners-b" style="padding-block:112px">
   <div class="hero-inner">
-    <span class="badge rv"><span class="dot"></span>v0.1.0 · framework complete<span class="div"></span><b>49 tests green</b></span>
+    <span class="badge rv"><span class="dot"></span>v0.1.0 · framework complete<span class="div"></span><b>56 tests green</b></span>
     <h1 class="display title-gradient rv">Terminal apps that ship<br/>like <em>web apps.</em></h1>
     <p class="sub rv">An open-source application framework for Rust terminal UIs.
       You declare routes and views — Veloce owns the event loop, the flexbox
@@ -445,7 +445,7 @@ svg.ic.sm{width:16px;height:16px}
       <a class="btn primary" href="https://veloce-5c81.onrender.com/">Read the docs</a>
       <a class="btn secondary" href="https://github.com/RavaniRoshan/veloce" rel="noopener noreferrer">Star on GitHub</a>
     </div>
-    <div class="proof rv mono"><span class="dot"></span>49 tests green · clippy clean · fmt clean</div>
+    <div class="proof rv mono"><span class="dot"></span>56 tests green · clippy clean · fmt clean</div>
   </div>
 </section>
 
@@ -701,7 +701,7 @@ pod log line 2   █</pre></div>
       <div class="cell rv"><h3 style="font-size:30px;letter-spacing:-.02em"><span data-count="4" data-dec="0">4</span> MiB</h3><p>Idle RSS after boot. Budget: 12 MiB.</p></div>
       <div class="cell rv"><h3 style="font-size:30px;letter-spacing:-.02em"><span data-count="10" data-dec="0">10</span> µs</h3><p>Key-echo p95 under 1,000 actions/sec.</p></div>
     </div>
-    <div class="honest rv" style="border:1px dashed var(--border-strong);border-radius:14px;padding:20px 22px;margin-top:18px;font-size:14px;line-height:1.65;color:var(--fg-muted)"><b style="color:var(--warning)">Honest caveat:</b> per-frame cost is not flat — relayout is O(children) because trees rebuild each frame. A memoized layout cache is the planned fix.</div>
+    <div class="honest rv" style="border:1px dashed var(--border-strong);border-radius:14px;padding:20px 22px;margin-top:18px;font-size:14px;line-height:1.65;color:var(--fg-muted)"><b style="color:var(--warning)">Honest caveat:</b> repeated frames reuse the last layout tree: 94 µs at 10 children, 160 µs at 2,000. A cold frame after a change still pays full layout, 180 µs to 2.25 ms.</div>
   </div>
 </section>
 
@@ -719,7 +719,7 @@ pod log line 2   █</pre></div>
       <details class="rv"><summary>How do I handle keyboard input?<span class="pm">+</span></summary><p>Implement <code>handle_key</code> on your view — it runs before any global routing. Return <code>true</code> to consume the event. <code>q</code> is reserved as the global quit key by <code>VeloceApp::run</code>.</p></details>
       <details class="rv"><summary>Does it work on macOS and Windows?<span class="pm">+</span></summary><p>Linux x86_64 is verified here (build + PTY e2e). macOS and Windows via WSL/Windows Terminal use the same portable crossterm/ratatui paths but are not verified in this environment.</p></details>
       <details class="rv"><summary>Is it on crates.io?<span class="pm">+</span></summary><p>Not yet — publishing needs the owner's token. File manifests are package-validated; releases will go leaf-crate first.</p></details>
-      <details class="rv"><summary>What is intentionally out of scope?<span class="pm">+</span></summary><p>Hot-reload/dev-server, mouse-wheel scrolling, non-terminal backends, and a memoized layout cache. The docs site keeps the full deferred list.</p></details>
+      <details class="rv"><summary>What is intentionally out of scope?<span class="pm">+</span></summary><p>Hot-reload/dev-server, mouse-wheel scrolling, and non-terminal backends. The docs site keeps the full deferred list.</p></details>
     </div>
   </div>
 </section>
@@ -745,7 +745,7 @@ pod log line 2   █</pre></div>
       <p>The terminal-UI meta-framework for Rust.</p>
       <div class="statusbox">
         <div class="hd">cargo test --workspace</div>
-        <div class="rw"><span class="ok"></span>49 passed · 0 failed</div>
+        <div class="rw"><span class="ok"></span>56 passed · 0 failed</div>
         <div class="rw"><span class="ok"></span>clippy · 0 warnings</div>
         <div class="rw"><span class="ok"></span>fmt · clean</div>
       </div>
