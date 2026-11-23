@@ -82,9 +82,8 @@ async-trait = "0.1"
 ```
 
 > [!NOTE]
-> This repository is version 0.2.0. crates.io currently serves 0.1.0; the
-> 0.2.0 publish is pending registry credentials. `cargo add veloce-tui`
-> installs the latest published release.
+> Version 0.2.0 is published on crates.io. `cargo add veloce-tui` installs
+> the current release; the installable demo is `cargo install veloce-tui --bin veloce-demo`.
 
 Then write a view — one struct, three methods:
 
