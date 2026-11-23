@@ -1,6 +1,6 @@
 use anyhow::Result;
 use crossbeam_channel::{Receiver, Sender};
-use crossterm::event::KeyEvent;
+use crossterm::event::{KeyEvent, MouseEvent};
 
 use crate::context::{channel, BoxedAction, Context, Dispatcher, NavCommand};
 use crate::element::{Element, Text};
@@ -30,6 +30,12 @@ pub trait View: Send + Sync + 'static {
     fn handle_key(&mut self, _key: KeyEvent, _cx: &mut Context<Self::Action>) -> bool {
         false
     }
+
+    /// Receive mouse events while mouse capture is on. Return `true` when the
+    /// view handled the event so the router stops propagating it.
+    fn handle_mouse(&mut self, _mouse: MouseEvent, _cx: &mut Context<Self::Action>) -> bool {
+        false
+    }
 }
 
 /// Type-erased view used by the router. Implemented by `ViewAdapter<V>`.
@@ -48,6 +54,8 @@ pub trait AnyView: Send {
     fn update_raw(&mut self, action: BoxedAction);
 
     fn handle_key(&mut self, key: KeyEvent) -> bool;
+
+    fn handle_mouse(&mut self, mouse: MouseEvent) -> bool;
 
     fn drain_actions(&mut self, max: usize) -> usize;
 
@@ -198,6 +206,17 @@ impl<V: View> AnyView for ViewAdapter<V> {
         };
         match &mut self.view {
             Some(v) => v.handle_key(key, &mut cx),
+            None => false,
+        }
+    }
+
+    fn handle_mouse(&mut self, mouse: MouseEvent) -> bool {
+        let mut cx = match &self.view {
+            Some(_) => self.build_cx(),
+            None => return false,
+        };
+        match &mut self.view {
+            Some(v) => v.handle_mouse(mouse, &mut cx),
             None => false,
         }
     }

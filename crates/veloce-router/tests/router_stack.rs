@@ -5,6 +5,7 @@ use veloce_router::{LayoutWrapper, Router};
 #[derive(Default, Clone)]
 struct PageA {
     keys: usize,
+    clicks: usize,
 }
 
 #[derive(Clone)]
@@ -22,7 +23,10 @@ impl View for PageA {
     }
     fn update(&mut self, _a: A, _cx: &mut Context<A>) {}
     fn view(&self) -> Element {
-        Element::Text(Text::new(format!("PageA keys={}", self.keys)))
+        Element::Text(Text::new(format!(
+            "PageA keys={} clicks={}",
+            self.keys, self.clicks
+        )))
     }
     fn handle_key(&mut self, key: crossterm::event::KeyEvent, _cx: &mut Context<A>) -> bool {
         use crossterm::event::KeyCode::*;
@@ -32,6 +36,19 @@ impl View for PageA {
                 true
             }
             _ => false,
+        }
+    }
+    fn handle_mouse(
+        &mut self,
+        mouse: crossterm::event::MouseEvent,
+        _cx: &mut Context<A>,
+    ) -> bool {
+        use crossterm::event::{MouseButton, MouseEventKind};
+        if mouse.kind == MouseEventKind::Down(MouseButton::Left) {
+            self.clicks += 1;
+            true
+        } else {
+            false
         }
     }
 }
@@ -103,6 +120,28 @@ fn replace_swaps_top_and_aborts_load() {
     r.replace("/b");
     assert_eq!(r.stack.len(), 1);
     assert_eq!(r.stack[0].path, "/b");
+}
+
+#[test]
+fn mouse_events_route_to_active_view() {
+    use crossterm::event::{MouseButton, MouseEvent, MouseEventKind};
+    let rt = tokio::runtime::Runtime::new().unwrap();
+    let mut r = Router::new();
+    r.route("/a", PageA::default());
+    r.root("/a");
+    for _ in 0..30 {
+        r.step(rt.handle());
+        std::thread::sleep(std::time::Duration::from_millis(5));
+    }
+    let click = MouseEvent {
+        kind: MouseEventKind::Down(MouseButton::Left),
+        column: 3,
+        row: 2,
+        modifiers: crossterm::event::KeyModifiers::NONE,
+    };
+    assert!(r.handle_mouse(click), "view should consume a left click");
+    let grid = veloce_render::render_to_string(&r.element(), 40, 5);
+    assert!(grid.contains("clicks=1"), "click not routed: {grid}");
 }
 
 #[test]

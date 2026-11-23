@@ -59,6 +59,10 @@ views declare data dependencies, and the framework handles the rest.
   file, never to the live screen.
 - **Live frame stats** — `frame_stats()` reports measured frame time; the
   layout cache can be toggled at runtime to see the difference in a live app.
+- **Mouse events** — views can override `handle_mouse`; click events route
+  modal-first, exactly like keys, with no global listener to wire up.
+- **Installable demo** — `cargo install veloce-tui --bin veloce-demo` gives you
+  the same 15-second demo used in the gallery.
 - **Built-in primitives** — `Text` (wrapping, bold, color), `TextInput`
   (char-indexed cursor, Unicode-aware), `ScrollView` (offset slicing,
   scrollbar), `Modal`, `Spacer`, plus `flex_row!` / `flex_column!` macros.
@@ -76,6 +80,11 @@ tokio = { version = "1", features = ["full"] }
 anyhow = "1"
 async-trait = "0.1"
 ```
+
+> [!NOTE]
+> This repository is version 0.2.0. crates.io currently serves 0.1.0; the
+> 0.2.0 publish is pending registry credentials. `cargo add veloce-tui`
+> installs the latest published release.
 
 Then write a view — one struct, three methods:
 
@@ -263,7 +272,7 @@ This project follows a simple rule: **a row is WORKS only when an automated
 test that drives the real code passes.** Reading code is never proof.
 
 ```bash
-cargo test --workspace          # 62 tests: unit + insta snapshots + proptest fuzz + real-PTY e2e
+cargo test --workspace          # 63 tests: unit + insta snapshots + proptest fuzz + real-PTY e2e
 cargo fmt --check               # must be clean
 cargo clippy --all-targets -- -D warnings   # zero warnings enforced
 cargo bench -p veloce --bench frame         # criterion baselines

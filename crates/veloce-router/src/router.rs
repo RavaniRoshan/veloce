@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use crossbeam_channel::{Receiver, Sender};
-use crossterm::event::KeyEvent;
+use crossterm::event::{KeyEvent, MouseEvent};
 
 use veloce_core::{AnyView, Element, Flex, NavCommand, View, ViewAdapter};
 
@@ -181,6 +181,23 @@ impl Router {
         }
         match self.stack.last_mut() {
             Some(route) => route.view.handle_key(key),
+            None => false,
+        }
+    }
+
+    /// Mouse events follow the same modal-first routing as keys. Views opt in
+    /// by overriding `View::handle_mouse`.
+    pub fn handle_mouse(&mut self, mouse: MouseEvent) -> bool {
+        if let Some(modal_index) = self
+            .stack
+            .iter()
+            .rposition(|r| r.is_modal)
+            .filter(|i| *i == self.stack.len() - 1)
+        {
+            return self.stack[modal_index].view.handle_mouse(mouse);
+        }
+        match self.stack.last_mut() {
+            Some(route) => route.view.handle_mouse(mouse),
             None => false,
         }
     }
