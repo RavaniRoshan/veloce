@@ -13,6 +13,7 @@ __     __  _____  _       ___    ____  _____
 [![GitHub stars](https://img.shields.io/github/stars/RavaniRoshan/veloce?style=flat-square)](https://github.com/RavaniRoshan/veloce)
 [![Rust](https://img.shields.io/badge/rust-stable-orange?style=flat-square&logo=rust)](https://www.rust-lang.org)
 [![Vite site](https://img.shields.io/badge/site-vite-646CFF?style=flat-square&logo=vite)](./site)
+[![Product Hunt](https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1387099&theme=light)](https://www.producthunt.com/posts/veloce)
 
 [Features](#features) • [Quick start](#quick-start) • [Usage](#usage) • [Examples](#examples) • [Architecture](#architecture) • [Verification](#verification) • [Docs & site](#docs--site)
 
@@ -31,6 +32,14 @@ views declare data dependencies, and the framework handles the rest.
 > Every claim in this README is backed by a named test or a measured probe —
 > see [Verification](#verification) and the Benchmarks docs page.
 
+<div align="center">
+
+<img src="./site/public/veloce-showcase.png" alt="Veloce showcase: live frame timings, layout-cache switch, and panic recovery" width="820" />
+
+[Watch the 15-second demo (GIF)](./site/public/demo.gif) — live frame stats, cache on/off, a resize burst, and a panic that restores the terminal.
+
+</div>
+
 ## Features
 
 - **Stack router with shells** — push / pop / replace over a route table, an
@@ -48,6 +57,8 @@ views declare data dependencies, and the framework handles the rest.
 - **Crash-resilient runtime** — panics, `SIGINT`, and `SIGTERM` restore the
   terminal (raw mode, alt screen, mouse capture) before exit. Logs go to a
   file, never to the live screen.
+- **Live frame stats** — `frame_stats()` reports measured frame time; the
+  layout cache can be toggled at runtime to see the difference in a live app.
 - **Built-in primitives** — `Text` (wrapping, bold, color), `TextInput`
   (char-indexed cursor, Unicode-aware), `ScrollView` (offset slicing,
   scrollbar), `Modal`, `Spacer`, plus `flex_row!` / `flex_column!` macros.
@@ -66,7 +77,7 @@ anyhow = "1"
 async-trait = "0.1"
 ```
 
-Then write a view — one struct, five methods:
+Then write a view — one struct, three methods:
 
 ```rust
 use veloce_tui::prelude::*;
@@ -207,6 +218,7 @@ the previous route with a dimmed backdrop and locked input focus.
 | `settings_log_viewer` | Settings form (`TextInput` fields, `Tab` focus) + streaming log viewer (`ScrollView`) built only from primitives | `cargo run -p veloce-tui --example settings_log_viewer` |
 | `agent_dashboard` | AI coding-agent harness dashboard streaming mock tool executions | `cargo run -p veloce-tui --example agent_dashboard` |
 | `panic_view_app` | Panics raised *inside* `view()` (`v`) and *inside* `update()` (`u`) restore the terminal | `cargo run -p veloce-tui --example panic_view_app` |
+| `showcase` | The 15-second demo: live frame stats, `c` toggles the layout cache, `r` adds rows, `v` panics and restores the terminal | `cargo run -p veloce-tui --example showcase` |
 
 > [!WARNING]
 > The examples take over your terminal (raw mode + alternate screen). If you
@@ -251,7 +263,7 @@ This project follows a simple rule: **a row is WORKS only when an automated
 test that drives the real code passes.** Reading code is never proof.
 
 ```bash
-cargo test --workspace          # 56 tests: unit + insta snapshots + proptest fuzz + real-PTY e2e
+cargo test --workspace          # 62 tests: unit + insta snapshots + proptest fuzz + real-PTY e2e
 cargo fmt --check               # must be clean
 cargo clippy --all-targets -- -D warnings   # zero warnings enforced
 cargo bench -p veloce --bench frame         # criterion baselines
@@ -291,6 +303,8 @@ implementation-phase paperwork is published there.
 
 - [`site/DESIGN.md`](./site/DESIGN.md) — the website design language, derived
   from opensend.cc (tokens, type, layout rhythm, components).
+- [`docs/COMPARISON.md`](./docs/COMPARISON.md) — an honest comparison with
+  ratatui, ratatui-kit, SuperLightTUI, and the other Rust TUI frameworks.
 
 Two local servers, one repo:
 

@@ -12,7 +12,7 @@ impl LayoutTree {
     pub fn build(root: &Element) -> Self {
         let mut tree = TaffyTree::new();
         let mut nodes = Vec::new();
-        build_node(&mut tree, &mut nodes, root);
+        build_node(&mut tree, &mut nodes, root, true);
         Self { tree, nodes }
     }
 
@@ -51,7 +51,12 @@ impl LayoutTree {
     }
 }
 
-fn build_node(tree: &mut TaffyTree<String>, nodes: &mut Vec<NodeId>, element: &Element) -> NodeId {
+fn build_node(
+    tree: &mut TaffyTree<String>,
+    nodes: &mut Vec<NodeId>,
+    element: &Element,
+    is_root: bool,
+) -> NodeId {
     let my_index = nodes.len();
     nodes.push(NodeId::from(0u64)); // placeholder keeps DFS indices aligned
     let id = match element {
@@ -59,26 +64,26 @@ fn build_node(tree: &mut TaffyTree<String>, nodes: &mut Vec<NodeId>, element: &E
             let children: Vec<NodeId> = f
                 .children
                 .iter()
-                .map(|c| build_node(tree, nodes, c))
+                .map(|c| build_node(tree, nodes, c, false))
                 .collect();
-            tree.new_with_children(to_taffy(&f.style, Some(element)), &children)
+            tree.new_with_children(to_taffy(&f.style, Some(element), is_root), &children)
                 .expect("taffy node")
         }
         Element::ScrollView(s) => {
             let children: Vec<NodeId> = s
                 .children
                 .iter()
-                .map(|c| build_node(tree, nodes, c))
+                .map(|c| build_node(tree, nodes, c, false))
                 .collect();
-            tree.new_with_children(to_taffy(&s.style, Some(element)), &children)
+            tree.new_with_children(to_taffy(&s.style, Some(element), is_root), &children)
                 .expect("taffy node")
         }
         Element::Overlay {
             below: o_below,
             overlay: o_overlay,
         } => {
-            let below = build_node(tree, nodes, o_below);
-            let overlay = build_node(tree, nodes, o_overlay);
+            let below = build_node(tree, nodes, o_below, false);
+            let overlay = build_node(tree, nodes, o_overlay, false);
             tree.set_style(
                 overlay,
                 taffy::Style {
@@ -122,7 +127,7 @@ fn build_node(tree: &mut TaffyTree<String>, nodes: &mut Vec<NodeId>, element: &E
                     ..Default::default()
                 })
                 .expect("taffy node");
-            let overlay = build_node(tree, nodes, &m.content);
+            let overlay = build_node(tree, nodes, &m.content, false);
             tree.set_style(
                 overlay,
                 taffy::Style {
@@ -177,14 +182,14 @@ fn build_node(tree: &mut TaffyTree<String>, nodes: &mut Vec<NodeId>, element: &E
             })
             .expect("taffy node"),
         Element::Spacer(_) => tree
-            .new_leaf(to_taffy(&Style::default(), Some(element)))
+            .new_leaf(to_taffy(&Style::default(), Some(element), false))
             .expect("taffy node"),
     };
     nodes[my_index] = id;
     id
 }
 
-fn to_taffy(style: &Style, element: Option<&Element>) -> taffy::Style {
+fn to_taffy(style: &Style, element: Option<&Element>, is_root: bool) -> taffy::Style {
     let mut s = taffy::Style {
         display: Display::Flex,
         ..Default::default()
@@ -218,7 +223,9 @@ fn to_taffy(style: &Style, element: Option<&Element>) -> taffy::Style {
             SizeSpec::Fixed(n) => Dimension::length(n as f32),
             SizeSpec::Grow(_) => Dimension::auto(),
             SizeSpec::Auto => match element {
-                Some(Element::Flex(_)) | Some(Element::ScrollView(_)) => Dimension::percent(1.0),
+                Some(Element::Flex(_)) | Some(Element::ScrollView(_)) if is_root => {
+                    Dimension::percent(1.0)
+                }
                 _ => Dimension::auto(),
             },
         },
@@ -226,7 +233,9 @@ fn to_taffy(style: &Style, element: Option<&Element>) -> taffy::Style {
             SizeSpec::Fixed(n) => Dimension::length(n as f32),
             SizeSpec::Grow(_) => Dimension::auto(),
             SizeSpec::Auto => match element {
-                Some(Element::Flex(_)) | Some(Element::ScrollView(_)) => Dimension::percent(1.0),
+                Some(Element::Flex(_)) | Some(Element::ScrollView(_)) if is_root => {
+                    Dimension::percent(1.0)
+                }
                 _ => Dimension::auto(),
             },
         },

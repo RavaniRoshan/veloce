@@ -2,9 +2,13 @@
 name = "veloce-tui"
 version = "0.1.0"
 edition = "2021"
-description = "Veloce terminal-UI framework (veloce)"
+description = "A Rust terminal-UI application framework: stack router, taffy flexbox, async hydration, and a crash-resilient runtime"
+readme = "../../README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/RavaniRoshan/veloce"
+homepage = "https://veloce-alpha-steel.vercel.app/"
+keywords = ["tui", "terminal", "framework", "ratatui", "async"]
+categories = ["command-line-interface", "asynchronous"]
 
 [dependencies]
 tokio = { workspace = true }

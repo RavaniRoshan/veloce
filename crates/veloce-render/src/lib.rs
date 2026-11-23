@@ -20,6 +20,10 @@ pub fn render_cached(element: &Element, buf: &mut Buffer, cache: &mut LayoutCach
 }
 
 fn render_with_rects(element: &Element, buf: &mut Buffer, rects: &[Placed]) {
+    // A frame is a full redraw: clear the buffer before painting this frame.
+    for cell in buf.content.iter_mut() {
+        *cell = ratatui::buffer::Cell::default();
+    }
     let mut i = 0;
     render_node(element, buf, rects, &mut i);
 }

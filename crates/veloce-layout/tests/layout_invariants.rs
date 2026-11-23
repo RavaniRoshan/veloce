@@ -136,6 +136,49 @@ fn no_drift_at_depth() {
 }
 
 #[test]
+fn nested_sections_do_not_each_claim_full_height() {
+    // Two sibling Flex sections must size to their content. A nested Flex
+    // asking for 100% height made every section fill the terminal and pushed
+    // the real content off screen.
+    let root = Flex::column()
+        .child(
+            Flex::row()
+                .padding(1)
+                .child(Text::new("header"))
+                .child(Spacer::grow())
+                .child(Text::new("v1")),
+        )
+        .child(
+            Flex::row()
+                .border(veloce_core::BorderStyle::Square)
+                .child(Text::new("frames 10")),
+        )
+        .child(Flex::column().flex_grow(1.0).child(Text::new("body")))
+        .into_element();
+    let placed = resolve_rects(&root, 100, 30);
+    let sections: Vec<Rect> = placed
+        .iter()
+        .filter(|p| p.parent == 0)
+        .map(|p| p.rect)
+        .collect();
+    assert_eq!(sections.len(), 3);
+    assert!(
+        sections[0].height <= 4,
+        "header claimed {} rows",
+        sections[0].height
+    );
+    assert!(
+        sections[1].height <= 4,
+        "metrics claimed {} rows",
+        sections[1].height
+    );
+    assert!(
+        sections[2].height > sections[0].height,
+        "body did not receive the remaining height"
+    );
+}
+
+#[test]
 fn no_zero_width_collapse() {
     // B3: a growing child must never collapse to 0 in a flex row.
     let root = Flex::row()

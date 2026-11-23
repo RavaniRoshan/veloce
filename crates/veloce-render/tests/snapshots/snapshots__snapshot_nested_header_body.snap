@@ -1,12 +1,11 @@
 ---
 source: crates/veloce-render/tests/snapshots.rs
-assertion_line: 78
+assertion_line: 81
 expression: "normalize(&render_to_string(&el, 60, 10))"
 ---
 ╭──────────────────────────────────────────────────────────╮
 │                                                          │
 │ Service: auth                                 Status: Ok │
-│                                                          │
 │                                                          │
 ╰──────────────────────────────────────────────────────────╯
 log line 1

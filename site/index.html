@@ -10,7 +10,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Veloce" />
 <meta property="og:title" content="Veloce — terminal-UI meta-framework for Rust" />
-<meta property="og:description" content="Free, open-source Rust TUI framework: stack router, flexbox layout, async hydration, and a panic-safe runtime. 56 tests green, 3.55 ms cold boot." />
+<meta property="og:description" content="Free, open-source Rust TUI framework: stack router, flexbox layout, async hydration, and a panic-safe runtime. 62 tests green, 3.55 ms cold boot." />
 <meta property="og:url" content="https://veloce-alpha-steel.vercel.app/" />
 <meta property="og:image" content="https://veloce-alpha-steel.vercel.app/og-image.png" />
 <meta property="og:image:width" content="1024" />
@@ -163,6 +163,14 @@ header.site{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--borde
 .hero-inner{display:flex;flex-direction:column;align-items:center;gap:24px;
   padding-inline:24px}
 @media(min-width:768px){.hero-inner{padding-inline:40px}}
+.hero-demo{width:min(100%,820px);margin:8px 0 0;border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;background:#0a0a0a;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.hero-demo img{display:block;width:100%;height:auto}
+.hero-demo figcaption{padding:12px 16px;font-size:12px;color:var(--fg-muted);text-align:left}
+.hero-install{display:inline-flex;align-items:center;gap:10px;padding:9px 14px;
+  border:1px solid var(--border);border-radius:10px;background:rgba(255,255,255,.03);
+  font-size:13px;color:var(--fg-muted)}
+.hero-install code{color:var(--fg);font-family:inherit}
 .badge{display:inline-flex;align-items:center;gap:10px;height:32px;padding:0 14px;
   border-radius:999px;background:var(--gradient-pill);border:1px solid var(--border);
   font-size:13px;color:var(--fg-muted)}
@@ -436,16 +444,21 @@ svg.ic.sm{width:16px;height:16px}
 <!-- HERO -->
 <section class="section hero corners corners-b" style="padding-block:112px">
   <div class="hero-inner">
-    <span class="badge rv"><span class="dot"></span>v0.1.0 · framework complete<span class="div"></span><b>56 tests green</b></span>
+    <span class="badge rv"><span class="dot"></span>v0.1.0 · framework complete<span class="div"></span><b>62 tests green</b></span>
     <h1 class="display title-gradient rv">Terminal apps that ship<br/>like <em>web apps.</em></h1>
     <p class="sub rv">An open-source application framework for Rust terminal UIs.
       You declare routes and views — Veloce owns the event loop, the flexbox
       math, and the terminal itself.</p>
+    <figure class="hero-demo rv">
+      <img src="/demo.gif" alt="Veloce showcase: live frame timings, layout-cache switch, and panic recovery" width="1240" height="930" />
+      <figcaption>15-second demo — live frame stats, cache on/off, panic restores the terminal</figcaption>
+    </figure>
+    <div class="hero-install rv mono"><span>$</span><code>cargo add veloce-tui</code></div>
     <div class="actions rv">
       <a class="btn primary" href="https://veloce-5c81.onrender.com/">Read the docs</a>
       <a class="btn secondary" href="https://github.com/RavaniRoshan/veloce" rel="noopener noreferrer">Star on GitHub</a>
     </div>
-    <div class="proof rv mono"><span class="dot"></span>56 tests green · clippy clean · fmt clean</div>
+    <div class="proof rv mono"><span class="dot"></span>62 tests green · clippy clean · fmt clean</div>
   </div>
 </section>
 

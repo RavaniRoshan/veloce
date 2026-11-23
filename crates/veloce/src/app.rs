@@ -74,9 +74,15 @@ impl VeloceApp {
             }
             self.router.step(&handle);
             let element = self.router.element();
+            let frame_start = std::time::Instant::now();
             let _ = terminal.draw(|f| {
-                veloce_render::render_cached(&element, f.buffer_mut(), &mut layout_cache)
+                if veloce_runtime::layout_cache_enabled() {
+                    veloce_render::render_cached(&element, f.buffer_mut(), &mut layout_cache)
+                } else {
+                    veloce_render::render(&element, f.buffer_mut())
+                }
             });
+            veloce_runtime::record_frame(frame_start.elapsed());
             interval.tick().await;
         }
     }
